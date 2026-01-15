@@ -7,72 +7,52 @@
         body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; height: 100vh; overflow: hidden; background: #eaeff2; }
         .container { display: flex; height: 100vh; width: 100%; }
         
-        /* КАРТА */
-        .map-wrapper {
-            flex: 1; display: flex; align-items: center; justify-content: center;
-            background: #fff; position: relative;
-        }
-        canvas { 
-            height: 85vh !important; width: auto !important;
-            max-width: 98%; object-fit: contain;
-            filter: drop-shadow(0 0 10px rgba(0,0,0,0.1));
-            cursor: crosshair;
-        }
+        .map-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; background: #fff; position: relative; }
+        canvas { height: 85vh !important; width: auto !important; max-width: 98%; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0,0,0,0.1)); cursor: crosshair; }
 
-        /* ПАНЕЛЬ */
-        .sidebar { 
-            width: 500px; padding: 15px 20px;
-            overflow-y: auto; background: #f8f9fa;
-            border-left: 1px solid #d1d1d1;
-            display: flex; flex-direction: column; gap: 20px;
-        }
-        
-        h3 { margin: 0 0 10px 0; border-bottom: 2px solid #ddd; padding-bottom: 5px; color: #333; font-size: 16px; }
+        .sidebar { width: 550px; padding: 15px 20px; overflow-y: auto; background: #f8f9fa; border-left: 1px solid #d1d1d1; display: flex; flex-direction: column; gap: 15px; }
+        h3 { margin: 0 0 5px 0; border-bottom: 2px solid #ddd; padding-bottom: 5px; color: #333; font-size: 15px; }
 
-        table { width: 100%; border-collapse: collapse; background: white; font-size: 12px; margin-bottom: 5px; }
-        th, td { border: 1px solid #e1e4e8; padding: 5px 3px; text-align: center; }
+        table { width: 100%; border-collapse: collapse; background: white; font-size: 11px; margin-bottom: 5px; }
+        th, td { border: 1px solid #e1e4e8; padding: 4px 2px; text-align: center; }
         th { background: #f1f3f5; font-weight: 600; }
         
         .row-blue { background-color: #e8f0fe; }
         .row-red { background-color: #fce8e6; }
         
-        .sum-row { font-weight: bold; }
+        /* Итоговые категории */
+        .cat-row { font-weight: bold; font-size: 12px; }
+        .cat-label { font-size: 10px; color: #666; font-weight: normal; display: block; }
+        
+        .sum-row { font-weight: bold; border-top: 2px solid #ccc; }
         .sum-blue { background: #d2e3fc; color: #1557b0; }
         .sum-red { background: #fad2cf; color: #a50e0e; }
         
         .btn-group { display: flex; gap: 2px; justify-content: center; }
-        .team-btn {
-            width: 26px; height: 24px; border: 1px solid #ccc; border-radius: 3px;
-            cursor: pointer; color: white; font-weight: bold; opacity: 0.3;
-        }
+        .team-btn { width: 26px; height: 24px; border: 1px solid #ccc; border-radius: 3px; cursor: pointer; color: white; font-weight: bold; opacity: 0.3; }
         .active { opacity: 1 !important; transform: scale(1.1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); border-color: #000; }
         .btn-1 { background: #1a73e8; } 
         .btn-2 { background: #d93025; } 
 
-        .loading-overlay {
-            position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(255,255,255,0.9);
-            display: flex; justify-content: center; align-items: center;
-            font-size: 18px; font-weight: bold; z-index: 10;
-        }
+        .loading-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.9); display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold; z-index: 10; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="map-wrapper">
-        <div id="loader" class="loading-overlay">Анализ новой карты...</div>
+        <div id="loader" class="loading-overlay">Загрузка...</div>
         <canvas id="gameCanvas"></canvas>
     </div>
 
     <div class="sidebar">
         <div>
-            <h3>Ресурсы</h3>
+            <h3>Распределение Ресурсов</h3>
             <table id="resourceTable">
                 <thead>
                     <tr>
                         <th align="left">Страна</th>
-                        <th width="60">Команда</th>
+                        <th width="60">Выбор</th>
                         <th>🌾</th><th>🐟</th><th>🔩</th><th>🪵</th><th>🪨</th><th>🛢️</th><th>🔥</th>
                     </tr>
                 </thead>
@@ -82,42 +62,61 @@
                         <td colspan="2">Итог Синие</td>
                         <td id="sb0">0</td><td id="sb1">0</td><td id="sb2">0</td><td id="sb3">0</td><td id="sb4">0</td><td id="sb5">0</td><td id="sb6">0</td>
                     </tr>
+                    <tr class="cat-row sum-blue">
+                        <td colspan="2">ВСЕГО (КАТЕГОРИИ)</td>
+                        <td colspan="2" id="cat-sb-food">0 <span class="cat-label">ЕДА</span></td>
+                        <td colspan="2" id="cat-sb-mats">0 <span class="cat-label">МАТЕРИАЛЫ</span></td>
+                        <td colspan="3" id="cat-sb-ener">0 <span class="cat-label">ЭНЕРГИЯ</span></td>
+                    </tr>
                     <tr class="sum-row sum-red">
                         <td colspan="2">Итог Красные</td>
                         <td id="sr0">0</td><td id="sr1">0</td><td id="sr2">0</td><td id="sr3">0</td><td id="sr4">0</td><td id="sr5">0</td><td id="sr6">0</td>
+                    </tr>
+                    <tr class="cat-row sum-red">
+                        <td colspan="2">ВСЕГО (КАТЕГОРИИ)</td>
+                        <td colspan="2" id="cat-sr-food">0 <span class="cat-label">ЕДА</span></td>
+                        <td colspan="2" id="cat-sr-mats">0 <span class="cat-label">МАТЕРИАЛЫ</span></td>
+                        <td colspan="3" id="cat-sr-ener">0 <span class="cat-label">ЭНЕРГИЯ</span></td>
                     </tr>
                 </tfoot>
             </table>
         </div>
 
         <div>
-            <h3>Прирост (В час / 24ч)</h3>
+            <h3>Прирост и Итоги Категорий</h3>
             <table id="growthTable">
                 <thead>
                     <tr>
                         <th>Команда</th>
                         <th>Период</th>
                         <th>🌾</th><th>🐟</th><th>🔩</th><th>🪵</th><th>🪨</th><th>🛢️</th><th>🔥</th>
+                        <th style="background:#e8e8e8">ЕДА</th>
+                        <th style="background:#e8e8e8">МАТ</th>
+                        <th style="background:#e8e8e8">ЭНЕРГ</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="row-blue">
-                        <td rowspan="2" style="font-weight:bold; color:#1557b0;">Синие</td>
+                        <td rowspan="2"><b>Синие</b></td>
                         <td>В час</td>
                         <td id="gbh0">0</td><td id="gbh1">0</td><td id="gbh2">0</td><td id="gbh3">0</td><td id="gbh4">0</td><td id="gbh5">0</td><td id="gbh6">0</td>
+                        <td id="gbh-food"><b>0</b></td><td id="gbh-mats"><b>0</b></td><td id="gbh-ener"><b>0</b></td>
                     </tr>
                     <tr class="row-blue">
                         <td>24 ч</td>
                         <td id="gbd0">0</td><td id="gbd1">0</td><td id="gbd2">0</td><td id="gbd3">0</td><td id="gbd4">0</td><td id="gbd5">0</td><td id="gbd6">0</td>
+                        <td id="gbd-food"><b>0</b></td><td id="gbd-mats"><b>0</b></td><td id="gbd-ener"><b>0</b></td>
                     </tr>
                     <tr class="row-red">
-                        <td rowspan="2" style="font-weight:bold; color:#a50e0e;">Красные</td>
+                        <td rowspan="2"><b>Красные</b></td>
                         <td>В час</td>
                         <td id="grh0">0</td><td id="grh1">0</td><td id="grh2">0</td><td id="grh3">0</td><td id="grh4">0</td><td id="grh5">0</td><td id="grh6">0</td>
+                        <td id="grh-food"><b>0</b></td><td id="grh-mats"><b>0</b></td><td id="grh-ener"><b>0</b></td>
                     </tr>
                     <tr class="row-red">
                         <td>24 ч</td>
                         <td id="grd0">0</td><td id="grd1">0</td><td id="grd2">0</td><td id="grd3">0</td><td id="grd4">0</td><td id="grd5">0</td><td id="grd6">0</td>
+                        <td id="grd-food"><b>0</b></td><td id="grd-mats"><b>0</b></td><td id="grd-ener"><b>0</b></td>
                     </tr>
                 </tbody>
             </table>
@@ -127,92 +126,52 @@
 
 <script>
 const countries = ["Sweden", "Germany", "Austria", "Italy", "France", "Britain", "Russia", "Turkey", "Morocco", "Spain"];
-
-// Координаты старта заливки для новой карты
 const countrySeeds = {
-    "Sweden":  [[630, 242]], 
-    "Germany": [[517, 538]], 
-    "Austria": [[751, 667]], 
-    "Italy":   [[548, 769], [467, 854], [581, 933]], 
-    "France":  [[314, 650], [462, 800]],             
-    "Britain": [[349, 452], [257, 415]],             
-    "Russia":  [[1051, 400]], 
-    "Turkey":  [[904, 865], [866, 830]], 
-    "Morocco": [[229, 935]], 
-    "Spain":   [[160, 788], [325, 844]]              
+    "Sweden": [[630, 242]], "Germany": [[517, 538]], "Austria": [[751, 667]], "Italy": [[548, 769], [467, 854], [581, 933]], 
+    "France": [[314, 650], [462, 800]], "Britain": [[349, 452], [257, 415]], "Russia": [[1051, 400]], 
+    "Turkey": [[904, 865], [866, 830]], "Morocco": [[229, 935]], "Spain": [[160, 788], [325, 844]]              
 };
-
 const regionData = {
-    "Sweden": [1, 3, 3, 6, 1, 1, 0], "Germany": [3, 0, 2, 3, 5, 1, 1],
-    "Austria": [5, 1, 2, 4, 2, 0, 1], "Italy": [5, 1, 2, 1, 2, 1, 3],
-    "France": [6, 2, 4, 1, 2, 0, 0], "Britain": [3, 2, 4, 1, 4, 0, 1],
-    "Russia": [5, 2, 2, 1, 1, 3, 1], "Turkey": [3, 1, 4, 3, 3, 0, 1],
+    "Sweden": [1, 3, 3, 6, 1, 1, 0], "Germany": [3, 0, 2, 3, 5, 1, 1], "Austria": [5, 1, 2, 4, 2, 0, 1], "Italy": [5, 1, 2, 1, 2, 1, 3],
+    "France": [6, 2, 4, 1, 2, 0, 0], "Britain": [3, 2, 4, 1, 4, 0, 1], "Russia": [5, 2, 2, 1, 1, 3, 1], "Turkey": [3, 1, 4, 3, 3, 0, 1],
     "Morocco": [2, 3, 3, 0, 0, 4, 3], "Spain": [3, 2, 5, 3, 2, 0, 0]
 };
-
 const growthData = {
-    "Sweden": [-200, 99, 299, 199, -34, 75, -133], "Germany": [-1, -200, 200, -101, 365, 75, -34],
-    "Austria": [199, -100, 200, -1, 66, -25, -34], "Italy": [199, -100, 200, -300, 66, 75, 166],
-    "France": [299, -1, 399, -300, 66, -25, -133], "Britain": [-1, -1, 399, -300, 266, -25, -34],
-    "Russia": [199, -1, 200, -300, -34, 274, -34], "Turkey": [-1, -100, 399, -101, 166, -25, -34],
-    "Morocco": [-101, 99, 299, -400, -133, 374, 166], "Spain": [-1, -1, 499, -101, 66, -25, -133]
+    "Sweden": [-200, 99, 299, 199, -34, 75, -133], "Germany": [-1, -200, 200, -101, 365, 75, -34], "Austria": [199, -100, 200, -1, 66, -25, -34],
+    "Italy": [199, -100, 200, -300, 66, 75, 166], "France": [299, -1, 399, -300, 66, -25, -133], "Britain": [-1, -1, 399, -300, 266, -25, -34],
+    "Russia": [199, -1, 200, -300, -34, 274, -34], "Turkey": [-1, -100, 399, -101, 166, -25, -34], "Morocco": [-101, 99, 299, -400, -133, 374, 166], "Spain": [-1, -1, 499, -101, 66, -25, -133]
 };
-
 const TEAM_COLORS = { 1: [51, 102, 204], 2: [204, 51, 51] };
-
-let teamSelection = {}; 
-let pixelToCountry = null;
-let originalPixels = null;
-let canvas, ctx, width, height;
+let teamSelection = {}, pixelToCountry = null, originalPixels = null, canvas, ctx, width, height;
 
 window.onload = function() {
-    canvas = document.getElementById('gameCanvas');
-    ctx = canvas.getContext('2d');
-    const img = new Image();
-    img.src = "map.png"; 
+    canvas = document.getElementById('gameCanvas'); ctx = canvas.getContext('2d');
+    const img = new Image(); img.src = "map.png";
     img.onload = function() {
-        width = canvas.width = img.width;
-        height = canvas.height = img.height;
+        width = canvas.width = img.width; height = canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
-        setTimeout(() => {
-            try {
-                processMapFloodFill();
-                document.getElementById('loader').style.display = 'none';
-                initTable();
-            } catch (e) { console.error(e); }
-        }, 50);
+        setTimeout(() => { try { processMapFloodFill(); document.getElementById('loader').style.display='none'; initTable(); } catch(e){} }, 50);
     };
     canvas.addEventListener('mousedown', onMapClick);
 };
 
 function processMapFloodFill() {
-    const imgData = ctx.getImageData(0, 0, width, height);
-    const data = imgData.data;
-    pixelToCountry = new Int8Array(width * height).fill(-1);
-    originalPixels = new Uint8ClampedArray(data);
-    
+    const data = ctx.getImageData(0,0,width,height).data;
+    pixelToCountry = new Int8Array(width*height).fill(-1); originalPixels = new Uint8ClampedArray(data);
     countries.forEach((name, countryIdx) => {
         countrySeeds[name].forEach(seed => {
-            const startIdx = (seed[1] * width + seed[0]) * 4;
-            if (pixelToCountry[startIdx/4] !== -1) return;
-            
-            const target = [data[startIdx], data[startIdx+1], data[startIdx+2]];
-            const stack = [seed[1] * width + seed[0]];
-            pixelToCountry[stack[0]] = countryIdx;
-            
+            const sIdx = seed[1]*width+seed[0];
+            if (pixelToCountry[sIdx]!==-1) return;
+            const target = [data[sIdx*4], data[sIdx*4+1], data[sIdx*4+2]];
+            const stack = [sIdx]; pixelToCountry[sIdx] = countryIdx;
             while(stack.length > 0) {
-                const p = stack.pop();
-                const cx = p % width, cy = Math.floor(p / width);
-                [[cx+1, cy], [cx-1, cy], [cx, cy+1], [cx, cy-1]].forEach(n => {
+                const p = stack.pop(); const cx = p%width, cy = Math.floor(p/width);
+                [[cx+1,cy],[cx-1,cy],[cx,cy+1],[cx,cy-1]].forEach(n => {
                     if (n[0]>=0 && n[0]<width && n[1]>=0 && n[1]<height) {
-                        const nIdx = n[1] * width + n[0];
-                        if (pixelToCountry[nIdx] === -1) {
-                            const dIdx = nIdx * 4;
-                            const dist = Math.abs(data[dIdx]-target[0]) + Math.abs(data[dIdx+1]-target[1]) + Math.abs(data[dIdx+2]-target[2]);
-                            if (dist < 45) {
-                                pixelToCountry[nIdx] = countryIdx;
-                                stack.push(nIdx);
-                            }
+                        const nIdx = n[1]*width+n[0];
+                        if (pixelToCountry[nIdx]===-1) {
+                            const d = nIdx*4; const dist = Math.abs(data[d]-target[0])+Math.abs(data[d+1]-target[1])+Math.abs(data[d+2]-target[2]);
+                            if (dist<45) { pixelToCountry[nIdx]=countryIdx; stack.push(nIdx); }
                         }
                     }
                 });
@@ -222,43 +181,28 @@ function processMapFloodFill() {
 }
 
 function redrawMap() {
-    const imgData = ctx.createImageData(width, height);
-    const data = imgData.data;
-    for (let i = 0; i < width * height; i++) {
-        const cIdx = pixelToCountry[i];
-        const team = cIdx !== -1 ? teamSelection[countries[cIdx]] : null;
-        if (team) {
-            const tc = TEAM_COLORS[team];
-            data[i*4]=tc[0]; data[i*4+1]=tc[1]; data[i*4+2]=tc[2]; data[i*4+3]=255;
-        } else {
-            data[i*4]=originalPixels[i*4]; data[i*4+1]=originalPixels[i*4+1]; data[i*4+2]=originalPixels[i*4+2]; data[i*4+3]=255;
-        }
+    const imgData = ctx.createImageData(width, height); const data = imgData.data;
+    for (let i=0; i<width*height; i++) {
+        const team = pixelToCountry[i]!==-1 ? teamSelection[countries[pixelToCountry[i]]] : null;
+        if (team) { const tc = TEAM_COLORS[team]; data[i*4]=tc[0]; data[i*4+1]=tc[1]; data[i*4+2]=tc[2]; data[i*4+3]=255; }
+        else { data[i*4]=originalPixels[i*4]; data[i*4+1]=originalPixels[i*4+1]; data[i*4+2]=originalPixels[i*4+2]; data[i*4+3]=255; }
     }
     ctx.putImageData(imgData, 0, 0);
 }
 
 function onMapClick(e) {
     const rect = canvas.getBoundingClientRect();
-    const x = Math.floor((e.clientX - rect.left) * (canvas.width / rect.width));
-    const y = Math.floor((e.clientY - rect.top) * (canvas.height / rect.height));
-    const cIdx = pixelToCountry[y * width + x];
-    if (cIdx !== -1) {
-        const name = countries[cIdx];
-        setCountryTeam(name, (teamSelection[name] || 0) + 1 > 2 ? 0 : (teamSelection[name] || 0) + 1);
-    }
+    const x = Math.floor((e.clientX-rect.left)*(canvas.width/rect.width)), y = Math.floor((e.clientY-rect.top)*(canvas.height/rect.height));
+    const cIdx = pixelToCountry[y*width+x];
+    if (cIdx!==-1) { const n = countries[cIdx]; setCountryTeam(n, (teamSelection[n]||0)+1 > 2 ? 0 : (teamSelection[n]||0)+1); }
 }
 
-function setCountryTeam(name, teamId) {
-    if (teamId === 0) delete teamSelection[name]; else teamSelection[name] = teamId;
-    updateTableVisuals(name); updateStats(); redrawMap();
-}
+function setCountryTeam(n, id) { if (id===0) delete teamSelection[n]; else teamSelection[n]=id; updateTableVisuals(n); updateStats(); redrawMap(); }
 
 function initTable() {
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = '';
+    const tbody = document.getElementById('tableBody'); tbody.innerHTML = '';
     countries.forEach(c => {
-        const tr = document.createElement('tr');
-        tr.id = 'row-' + c;
+        const tr = document.createElement('tr'); tr.id = 'row-'+c;
         tr.innerHTML = `<td align="left">${c}</td><td class="btn-group">
             <button class="team-btn btn-1" id="btn-${c}-1" onclick="setCountryTeam('${c}', 1)">1</button>
             <button class="team-btn btn-2" id="btn-${c}-2" onclick="setCountryTeam('${c}', 2)">2</button>
@@ -268,11 +212,10 @@ function initTable() {
 }
 
 function updateTableVisuals(c) {
-    const tr = document.getElementById('row-' + c);
-    const team = teamSelection[c];
-    tr.className = team === 1 ? 'row-blue' : (team === 2 ? 'row-red' : '');
-    document.getElementById(`btn-${c}-1`).classList.toggle('active', team === 1);
-    document.getElementById(`btn-${c}-2`).classList.toggle('active', team === 2);
+    const tr = document.getElementById('row-'+c); const team = teamSelection[c];
+    tr.className = team===1 ? 'row-blue' : (team===2 ? 'row-red' : '');
+    document.getElementById(`btn-${c}-1`).classList.toggle('active', team===1);
+    document.getElementById(`btn-${c}-2`).classList.toggle('active', team===2);
 }
 
 function updateStats() {
@@ -280,15 +223,50 @@ function updateStats() {
     countries.forEach(c => {
         const team = teamSelection[c];
         if (team) {
-            regionData[c].forEach((v, i) => team === 1 ? sb[i]+=v : sr[i]+=v);
-            growthData[c].forEach((v, i) => team === 1 ? gbh[i]+=v : grh[i]+=v);
+            regionData[c].forEach((v, i) => team===1 ? sb[i]+=v : sr[i]+=v);
+            growthData[c].forEach((v, i) => team===1 ? gbh[i]+=v : grh[i]+=v);
         }
     });
+
+    // Обновление индивидуальных ячеек (Таблица ресурсов)
     for(let i=0; i<7; i++) {
-        document.getElementById('sb'+i).textContent = sb[i]; document.getElementById('sr'+i).textContent = sr[i];
-        document.getElementById('gbh'+i).textContent = gbh[i]; document.getElementById('grh'+i).textContent = grh[i];
-        document.getElementById('gbd'+i).textContent = gbh[i]*24; document.getElementById('grd'+i).textContent = grh[i]*24;
+        document.getElementById('sb'+i).textContent = sb[i];
+        document.getElementById('sr'+i).textContent = sr[i];
+        document.getElementById('gbh'+i).textContent = gbh[i];
+        document.getElementById('grh'+i).textContent = grh[i];
+        document.getElementById('gbd'+i).textContent = gbh[i]*24;
+        document.getElementById('grd'+i).textContent = grh[i]*24;
     }
+
+    // Расчет категорий ресурсов
+    const sb_food = sb[0]+sb[1], sb_mats = sb[2]+sb[3], sb_ener = sb[4]+sb[5]+sb[6];
+    const sr_food = sr[0]+sr[1], sr_mats = sr[2]+sr[3], sr_ener = sr[4]+sr[5]+sr[6];
+
+    document.getElementById('cat-sb-food').innerHTML = `<b>${sb_food}</b> <span class="cat-label">ЕДА</span>`;
+    document.getElementById('cat-sb-mats').innerHTML = `<b>${sb_mats}</b> <span class="cat-label">МАТЕРИАЛЫ</span>`;
+    document.getElementById('cat-sb-ener').innerHTML = `<b>${sb_ener}</b> <span class="cat-label">ЭНЕРГИЯ</span>`;
+    
+    document.getElementById('cat-sr-food').innerHTML = `<b>${sr_food}</b> <span class="cat-label">ЕДА</span>`;
+    document.getElementById('cat-sr-mats').innerHTML = `<b>${sr_mats}</b> <span class="cat-label">МАТЕРИАЛЫ</span>`;
+    document.getElementById('cat-sr-ener').innerHTML = `<b>${sr_ener}</b> <span class="cat-label">ЭНЕРГИЯ</span>`;
+
+    // Расчет категорий прироста
+    const gbh_f = gbh[0]+gbh[1], gbh_m = gbh[2]+gbh[3], gbh_e = gbh[4]+gbh[5]+gbh[6];
+    const grh_f = grh[0]+grh[1], grh_m = grh[2]+grh[3], grh_e = grh[4]+grh[5]+grh[6];
+
+    document.getElementById('gbh-food').textContent = gbh_f;
+    document.getElementById('gbh-mats').textContent = gbh_m;
+    document.getElementById('gbh-ener').textContent = gbh_e;
+    document.getElementById('gbd-food').textContent = gbh_f * 24;
+    document.getElementById('gbd-mats').textContent = gbh_m * 24;
+    document.getElementById('gbd-ener').textContent = gbh_e * 24;
+
+    document.getElementById('grh-food').textContent = grh_f;
+    document.getElementById('grh-mats').textContent = grh_m;
+    document.getElementById('grh-ener').textContent = grh_e;
+    document.getElementById('grd-food').textContent = grh_f * 24;
+    document.getElementById('grd-mats').textContent = grh_m * 24;
+    document.getElementById('grd-ener').textContent = grh_e * 24;
 }
 </script>
 </body>
