@@ -2,35 +2,90 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Карта Европы</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Битва Ресурсов</title>
     <style>
-        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; height: 100vh; overflow: hidden; background: #eaeff2; }
-        .container { display: flex; height: 100vh; width: 100%; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background: #eaeff2; color: #333; }
         
-        .map-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; background: #fff; position: relative; }
-        canvas { height: 85vh !important; width: auto !important; max-width: 98%; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0,0,0,0.1)); cursor: crosshair; }
+        /* Главный контейнер */
+        .container { 
+            display: flex; 
+            flex-direction: row; /* По умолчанию в ряд (для ПК) */
+            height: 100vh; 
+            width: 100%; 
+        }
 
-        .sidebar { width: 550px; padding: 15px 20px; overflow-y: auto; background: #f8f9fa; border-left: 1px solid #d1d1d1; display: flex; flex-direction: column; gap: 15px; }
-        h3 { margin: 0 0 5px 0; border-bottom: 2px solid #ddd; padding-bottom: 5px; color: #333; font-size: 15px; }
+        /* КАРТА */
+        .map-wrapper { 
+            flex: 1; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: #fff; 
+            position: relative; 
+            padding: 10px;
+        }
+        canvas { 
+            height: 85vh; 
+            width: auto; 
+            max-width: 100%; 
+            object-fit: contain; 
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.1)); 
+            cursor: crosshair;
+        }
 
+        /* ПАНЕЛЬ С ТАБЛИЦАМИ */
+        .sidebar { 
+            width: 550px; 
+            padding: 15px 20px; 
+            overflow-y: auto; 
+            background: #f8f9fa; 
+            border-left: 1px solid #d1d1d1; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+        }
+
+        /* АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ */
+        @media (max-width: 900px) {
+            body { overflow: auto; height: auto; }
+            .container { 
+                flex-direction: column-reverse; /* Таблицы сверху, карта снизу */
+                height: auto; 
+            }
+            .sidebar { 
+                width: 100%; 
+                border-left: none; 
+                border-bottom: 1px solid #ddd; 
+                box-sizing: border-box; 
+                padding: 10px;
+            }
+            .map-wrapper { 
+                width: 100%; 
+                padding: 20px 0; 
+            }
+            canvas { 
+                height: auto; 
+                width: 95vw; /* Карта на всю ширину экрана телефона */
+            }
+        }
+
+        h3 { margin: 0 0 5px 0; border-bottom: 2px solid #ddd; padding-bottom: 5px; font-size: 15px; }
         table { width: 100%; border-collapse: collapse; background: white; font-size: 11px; margin-bottom: 5px; }
         th, td { border: 1px solid #e1e4e8; padding: 4px 2px; text-align: center; }
         th { background: #f1f3f5; font-weight: 600; }
         
         .row-blue { background-color: #e8f0fe; }
         .row-red { background-color: #fce8e6; }
-        
-        /* Итоговые категории */
         .cat-row { font-weight: bold; font-size: 12px; }
-        .cat-label { font-size: 10px; color: #666; font-weight: normal; display: block; }
-        
+        .cat-label { font-size: 9px; color: #666; font-weight: normal; display: block; }
         .sum-row { font-weight: bold; border-top: 2px solid #ccc; }
         .sum-blue { background: #d2e3fc; color: #1557b0; }
         .sum-red { background: #fad2cf; color: #a50e0e; }
         
         .btn-group { display: flex; gap: 2px; justify-content: center; }
-        .team-btn { width: 26px; height: 24px; border: 1px solid #ccc; border-radius: 3px; cursor: pointer; color: white; font-weight: bold; opacity: 0.3; }
-        .active { opacity: 1 !important; transform: scale(1.1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); border-color: #000; }
+        .team-btn { width: 30px; height: 28px; border: 1px solid #ccc; border-radius: 3px; cursor: pointer; color: white; font-weight: bold; opacity: 0.3; }
+        .active { opacity: 1 !important; transform: scale(1.1); border-color: #000; }
         .btn-1 { background: #1a73e8; } 
         .btn-2 { background: #d93025; } 
 
@@ -52,7 +107,7 @@
                 <thead>
                     <tr>
                         <th align="left">Страна</th>
-                        <th width="60">Выбор</th>
+                        <th width="70">Команда</th>
                         <th>🌾</th><th>🐟</th><th>🔩</th><th>🪵</th><th>🪨</th><th>🛢️</th><th>🔥</th>
                     </tr>
                 </thead>
@@ -63,7 +118,7 @@
                         <td id="sb0">0</td><td id="sb1">0</td><td id="sb2">0</td><td id="sb3">0</td><td id="sb4">0</td><td id="sb5">0</td><td id="sb6">0</td>
                     </tr>
                     <tr class="cat-row sum-blue">
-                        <td colspan="2">ВСЕГО (КАТЕГОРИИ)</td>
+                        <td colspan="2">КАТЕГОРИИ</td>
                         <td colspan="2" id="cat-sb-food">0 <span class="cat-label">ЕДА</span></td>
                         <td colspan="2" id="cat-sb-mats">0 <span class="cat-label">МАТЕРИАЛЫ</span></td>
                         <td colspan="3" id="cat-sb-ener">0 <span class="cat-label">ЭНЕРГИЯ</span></td>
@@ -73,7 +128,7 @@
                         <td id="sr0">0</td><td id="sr1">0</td><td id="sr2">0</td><td id="sr3">0</td><td id="sr4">0</td><td id="sr5">0</td><td id="sr6">0</td>
                     </tr>
                     <tr class="cat-row sum-red">
-                        <td colspan="2">ВСЕГО (КАТЕГОРИИ)</td>
+                        <td colspan="2">КАТЕГОРИИ</td>
                         <td colspan="2" id="cat-sr-food">0 <span class="cat-label">ЕДА</span></td>
                         <td colspan="2" id="cat-sr-mats">0 <span class="cat-label">МАТЕРИАЛЫ</span></td>
                         <td colspan="3" id="cat-sr-ener">0 <span class="cat-label">ЭНЕРГИЯ</span></td>
@@ -83,40 +138,40 @@
         </div>
 
         <div>
-            <h3>Прирост и Итоги Категорий</h3>
+            <h3>Прирост и Итоги</h3>
             <table id="growthTable">
                 <thead>
                     <tr>
-                        <th>Команда</th>
+                        <th>Ком</th>
                         <th>Период</th>
                         <th>🌾</th><th>🐟</th><th>🔩</th><th>🪵</th><th>🪨</th><th>🛢️</th><th>🔥</th>
                         <th style="background:#e8e8e8">ЕДА</th>
                         <th style="background:#e8e8e8">МАТ</th>
-                        <th style="background:#e8e8e8">ЭНЕРГ</th>
+                        <th style="background:#e8e8e8">ЭНЕР</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="row-blue">
-                        <td rowspan="2"><b>Синие</b></td>
-                        <td>В час</td>
+                        <td rowspan="2"><b>С</b></td>
+                        <td>Час</td>
                         <td id="gbh0">0</td><td id="gbh1">0</td><td id="gbh2">0</td><td id="gbh3">0</td><td id="gbh4">0</td><td id="gbh5">0</td><td id="gbh6">0</td>
-                        <td id="gbh-food"><b>0</b></td><td id="gbh-mats"><b>0</b></td><td id="gbh-ener"><b>0</b></td>
+                        <td id="gbh-food">0</td><td id="gbh-mats">0</td><td id="gbh-ener">0</td>
                     </tr>
                     <tr class="row-blue">
-                        <td>24 ч</td>
+                        <td>24ч</td>
                         <td id="gbd0">0</td><td id="gbd1">0</td><td id="gbd2">0</td><td id="gbd3">0</td><td id="gbd4">0</td><td id="gbd5">0</td><td id="gbd6">0</td>
-                        <td id="gbd-food"><b>0</b></td><td id="gbd-mats"><b>0</b></td><td id="gbd-ener"><b>0</b></td>
+                        <td id="gbd-food">0</td><td id="gbd-mats">0</td><td id="gbd-ener">0</td>
                     </tr>
                     <tr class="row-red">
-                        <td rowspan="2"><b>Красные</b></td>
-                        <td>В час</td>
+                        <td rowspan="2"><b>К</b></td>
+                        <td>Час</td>
                         <td id="grh0">0</td><td id="grh1">0</td><td id="grh2">0</td><td id="grh3">0</td><td id="grh4">0</td><td id="grh5">0</td><td id="grh6">0</td>
-                        <td id="grh-food"><b>0</b></td><td id="grh-mats"><b>0</b></td><td id="grh-ener"><b>0</b></td>
+                        <td id="grh-food">0</td><td id="grh-mats">0</td><td id="grh-ener">0</td>
                     </tr>
                     <tr class="row-red">
-                        <td>24 ч</td>
+                        <td>24ч</td>
                         <td id="grd0">0</td><td id="grd1">0</td><td id="grd2">0</td><td id="grd3">0</td><td id="grd4">0</td><td id="grd5">0</td><td id="grd6">0</td>
-                        <td id="grd-food"><b>0</b></td><td id="grd-mats"><b>0</b></td><td id="grd-ener"><b>0</b></td>
+                        <td id="grd-food">0</td><td id="grd-mats">0</td><td id="grd-ener">0</td>
                     </tr>
                 </tbody>
             </table>
@@ -227,46 +282,24 @@ function updateStats() {
             growthData[c].forEach((v, i) => team===1 ? gbh[i]+=v : grh[i]+=v);
         }
     });
-
-    // Обновление индивидуальных ячеек (Таблица ресурсов)
     for(let i=0; i<7; i++) {
-        document.getElementById('sb'+i).textContent = sb[i];
-        document.getElementById('sr'+i).textContent = sr[i];
-        document.getElementById('gbh'+i).textContent = gbh[i];
-        document.getElementById('grh'+i).textContent = grh[i];
-        document.getElementById('gbd'+i).textContent = gbh[i]*24;
-        document.getElementById('grd'+i).textContent = grh[i]*24;
+        document.getElementById('sb'+i).textContent = sb[i]; document.getElementById('sr'+i).textContent = sr[i];
+        document.getElementById('gbh'+i).textContent = gbh[i]; document.getElementById('grh'+i).textContent = grh[i];
+        document.getElementById('gbd'+i).textContent = gbh[i]*24; document.getElementById('grd'+i).textContent = grh[i]*24;
     }
-
-    // Расчет категорий ресурсов
-    const sb_food = sb[0]+sb[1], sb_mats = sb[2]+sb[3], sb_ener = sb[4]+sb[5]+sb[6];
-    const sr_food = sr[0]+sr[1], sr_mats = sr[2]+sr[3], sr_ener = sr[4]+sr[5]+sr[6];
-
-    document.getElementById('cat-sb-food').innerHTML = `<b>${sb_food}</b> <span class="cat-label">ЕДА</span>`;
-    document.getElementById('cat-sb-mats').innerHTML = `<b>${sb_mats}</b> <span class="cat-label">МАТЕРИАЛЫ</span>`;
-    document.getElementById('cat-sb-ener').innerHTML = `<b>${sb_ener}</b> <span class="cat-label">ЭНЕРГИЯ</span>`;
-    
-    document.getElementById('cat-sr-food').innerHTML = `<b>${sr_food}</b> <span class="cat-label">ЕДА</span>`;
-    document.getElementById('cat-sr-mats').innerHTML = `<b>${sr_mats}</b> <span class="cat-label">МАТЕРИАЛЫ</span>`;
-    document.getElementById('cat-sr-ener').innerHTML = `<b>${sr_ener}</b> <span class="cat-label">ЭНЕРГИЯ</span>`;
-
-    // Расчет категорий прироста
-    const gbh_f = gbh[0]+gbh[1], gbh_m = gbh[2]+gbh[3], gbh_e = gbh[4]+gbh[5]+gbh[6];
-    const grh_f = grh[0]+grh[1], grh_m = grh[2]+grh[3], grh_e = grh[4]+grh[5]+grh[6];
-
-    document.getElementById('gbh-food').textContent = gbh_f;
-    document.getElementById('gbh-mats').textContent = gbh_m;
-    document.getElementById('gbh-ener').textContent = gbh_e;
-    document.getElementById('gbd-food').textContent = gbh_f * 24;
-    document.getElementById('gbd-mats').textContent = gbh_m * 24;
-    document.getElementById('gbd-ener').textContent = gbh_e * 24;
-
-    document.getElementById('grh-food').textContent = grh_f;
-    document.getElementById('grh-mats').textContent = grh_m;
-    document.getElementById('grh-ener').textContent = grh_e;
-    document.getElementById('grd-food').textContent = grh_f * 24;
-    document.getElementById('grd-mats').textContent = grh_m * 24;
-    document.getElementById('grd-ener').textContent = grh_e * 24;
+    const updateCat = (arr, id) => {
+        document.getElementById(`cat-${id}-food`).innerHTML = `<b>${arr[0]+arr[1]}</b> <span class="cat-label">ЕДА</span>`;
+        document.getElementById(`cat-${id}-mats`).innerHTML = `<b>${arr[2]+arr[3]}</b> <span class="cat-label">МАТ</span>`;
+        document.getElementById(`cat-${id}-ener`).innerHTML = `<b>${arr[4]+arr[5]+arr[6]}</b> <span class="cat-label">ЭНЕРГ</span>`;
+    };
+    updateCat(sb, 'sb'); updateCat(sr, 'sr');
+    const updateGroCat = (arr, id) => {
+        document.getElementById(`${id}-food`).textContent = arr[0]+arr[1];
+        document.getElementById(`${id}-mats`).textContent = arr[2]+arr[3];
+        document.getElementById(`${id}-ener`).textContent = arr[4]+arr[5]+arr[6];
+    };
+    updateGroCat(gbh, 'gbh'); updateGroCat(grh, 'grh');
+    updateGroCat(gbh.map(v=>v*24), 'gbd'); updateGroCat(grh.map(v=>v*24), 'grd');
 }
 </script>
 </body>
