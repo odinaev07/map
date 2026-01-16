@@ -4,105 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Битва Ресурсов</title>
-    <style>
-        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background: #eaeff2; color: #333; }
-        
-        /* Главный контейнер */
-        .container { 
-            display: flex; 
-            flex-direction: row; /* По умолчанию в ряд (для ПК) */
-            height: 100vh; 
-            width: 100%; 
-        }
 
-        /* КАРТА */
-        .map-wrapper { 
-            flex: 1; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            background: #fff; 
-            position: relative; 
-            padding: 10px;
-        }
-        canvas { 
-            height: 85vh; 
-            width: auto; 
-            max-width: 100%; 
-            object-fit: contain; 
-            filter: drop-shadow(0 0 10px rgba(0,0,0,0.1)); 
-            cursor: crosshair;
-        }
-
-        /* ПАНЕЛЬ С ТАБЛИЦАМИ */
-        .sidebar { 
-            width: 550px; 
-            padding: 15px 20px; 
-            overflow-y: auto; 
-            background: #f8f9fa; 
-            border-left: 1px solid #d1d1d1; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-        }
-
-        /* АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ */
-        @media (max-width: 900px) {
-            body { overflow: auto; height: auto; }
-            .container { 
-                flex-direction: column-reverse; /* Таблицы сверху, карта снизу */
-                height: auto; 
-            }
-            .sidebar { 
-                width: 100%; 
-                border-left: none; 
-                border-bottom: 1px solid #ddd; 
-                box-sizing: border-box; 
-                padding: 10px;
-            }
-            .map-wrapper { 
-                width: 100%; 
-                padding: 20px 0; 
-            }
-            canvas { 
-                height: auto; 
-                width: 95vw; /* Карта на всю ширину экрана телефона */
-            }
-        }
-
-        h3 { margin: 0 0 5px 0; border-bottom: 2px solid #ddd; padding-bottom: 5px; font-size: 15px; }
-        table { width: 100%; border-collapse: collapse; background: white; font-size: 11px; margin-bottom: 5px; }
-        th, td { border: 1px solid #e1e4e8; padding: 4px 2px; text-align: center; }
-        th { background: #f1f3f5; font-weight: 600; }
-        
-        .row-blue { background-color: #e8f0fe; }
-        .row-red { background-color: #fce8e6; }
-        .cat-row { font-weight: bold; font-size: 12px; }
-        .cat-label { font-size: 9px; color: #666; font-weight: normal; display: block; }
-        .sum-row { font-weight: bold; border-top: 2px solid #ccc; }
-        .sum-blue { background: #d2e3fc; color: #1557b0; }
-        .sum-red { background: #fad2cf; color: #a50e0e; }
-        
-        .btn-group { display: flex; gap: 2px; justify-content: center; }
-        .team-btn { width: 30px; height: 28px; border: 1px solid #ccc; border-radius: 3px; cursor: pointer; color: white; font-weight: bold; opacity: 0.3; }
-        .active { opacity: 1 !important; transform: scale(1.1); border-color: #000; }
-        .btn-1 { background: #1a73e8; } 
-        .btn-2 { background: #d93025; } 
-
-        .loading-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.9); display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold; z-index: 10; }
-    </style>
+    <!-- ОСНОВНОЙ СТИЛЬ -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- =====================
+     TOP HUD (HOI / TOTAL WAR)
+===================== -->
+<header class="top-hud">
+    <div class="hud-left">
+        <span class="game-title">ПИК СТРАН</span>
+    </div>
+
+    <div class="hud-center">
+        <div class="hud-team blue">
+            <span>СИНИЕ</span>
+            <span id="hud-blue-total">0</span>
+        </div>
+
+        <div class="hud-team red">
+            <span>КРАСНЫЕ</span>
+            <span id="hud-red-total">0</span>
+        </div>
+    </div>
+
+    <div class="hud-right">
+        <button id="themeToggle">🌙</button>
+    </div>
+</header>
+
+<!-- =====================
+     ОСНОВНОЙ КОНТЕНТ
+===================== -->
 <div class="container">
+
+    <!-- КАРТА -->
     <div class="map-wrapper">
         <div id="loader" class="loading-overlay">Загрузка...</div>
         <canvas id="gameCanvas"></canvas>
     </div>
 
+    <!-- САЙДБАР -->
     <div class="sidebar">
+
+        <!-- РЕСУРСЫ -->
         <div>
-            <h3>Распределение Ресурсов</h3>
+            <h3>Распределение ресурсов</h3>
             <table id="resourceTable">
                 <thead>
                     <tr>
@@ -115,62 +64,70 @@
                 <tfoot>
                     <tr class="sum-row sum-blue">
                         <td colspan="2">Итог Синие</td>
-                        <td id="sb0">0</td><td id="sb1">0</td><td id="sb2">0</td><td id="sb3">0</td><td id="sb4">0</td><td id="sb5">0</td><td id="sb6">0</td>
+                        <td id="sb0">0</td><td id="sb1">0</td><td id="sb2">0</td>
+                        <td id="sb3">0</td><td id="sb4">0</td><td id="sb5">0</td><td id="sb6">0</td>
                     </tr>
                     <tr class="cat-row sum-blue">
                         <td colspan="2">КАТЕГОРИИ</td>
                         <td colspan="2" id="cat-sb-food">0 <span class="cat-label">ЕДА</span></td>
-                        <td colspan="2" id="cat-sb-mats">0 <span class="cat-label">МАТЕРИАЛЫ</span></td>
-                        <td colspan="3" id="cat-sb-ener">0 <span class="cat-label">ЭНЕРГИЯ</span></td>
+                        <td colspan="2" id="cat-sb-mats">0 <span class="cat-label">МАТ</span></td>
+                        <td colspan="3" id="cat-sb-ener">0 <span class="cat-label">ЭНЕРГ</span></td>
                     </tr>
+
                     <tr class="sum-row sum-red">
                         <td colspan="2">Итог Красные</td>
-                        <td id="sr0">0</td><td id="sr1">0</td><td id="sr2">0</td><td id="sr3">0</td><td id="sr4">0</td><td id="sr5">0</td><td id="sr6">0</td>
+                        <td id="sr0">0</td><td id="sr1">0</td><td id="sr2">0</td>
+                        <td id="sr3">0</td><td id="sr4">0</td><td id="sr5">0</td><td id="sr6">0</td>
                     </tr>
                     <tr class="cat-row sum-red">
                         <td colspan="2">КАТЕГОРИИ</td>
                         <td colspan="2" id="cat-sr-food">0 <span class="cat-label">ЕДА</span></td>
-                        <td colspan="2" id="cat-sr-mats">0 <span class="cat-label">МАТЕРИАЛЫ</span></td>
-                        <td colspan="3" id="cat-sr-ener">0 <span class="cat-label">ЭНЕРГИЯ</span></td>
+                        <td colspan="2" id="cat-sr-mats">0 <span class="cat-label">МАТ</span></td>
+                        <td colspan="3" id="cat-sr-ener">0 <span class="cat-label">ЭНЕРГ</span></td>
                     </tr>
                 </tfoot>
             </table>
         </div>
 
+        <!-- ПРИРОСТ -->
         <div>
-            <h3>Прирост и Итоги</h3>
+            <h3>Прирост и итоги</h3>
             <table id="growthTable">
                 <thead>
                     <tr>
                         <th>Ком</th>
                         <th>Период</th>
-                        <th>🌾</th><th>🐟</th><th>🔩</th><th>🪵</th><th>🪨</th><th>🛢️</th><th>🔥</th>
-                        <th style="background:#e8e8e8">ЕДА</th>
-                        <th style="background:#e8e8e8">МАТ</th>
-                        <th style="background:#e8e8e8">ЭНЕР</th>
+                        <th>🌾</th><th>🐟</th><th>🔩</th><th>🪵</th>
+                        <th>🪨</th><th>🛢️</th><th>🔥</th>
+                        <th>ЕДА</th><th>МАТ</th><th>ЭНЕР</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="row-blue">
                         <td rowspan="2"><b>С</b></td>
                         <td>Час</td>
-                        <td id="gbh0">0</td><td id="gbh1">0</td><td id="gbh2">0</td><td id="gbh3">0</td><td id="gbh4">0</td><td id="gbh5">0</td><td id="gbh6">0</td>
+                        <td id="gbh0">0</td><td id="gbh1">0</td><td id="gbh2">0</td>
+                        <td id="gbh3">0</td><td id="gbh4">0</td><td id="gbh5">0</td><td id="gbh6">0</td>
                         <td id="gbh-food">0</td><td id="gbh-mats">0</td><td id="gbh-ener">0</td>
                     </tr>
                     <tr class="row-blue">
                         <td>24ч</td>
-                        <td id="gbd0">0</td><td id="gbd1">0</td><td id="gbd2">0</td><td id="gbd3">0</td><td id="gbd4">0</td><td id="gbd5">0</td><td id="gbd6">0</td>
+                        <td id="gbd0">0</td><td id="gbd1">0</td><td id="gbd2">0</td>
+                        <td id="gbd3">0</td><td id="gbd4">0</td><td id="gbd5">0</td><td id="gbd6">0</td>
                         <td id="gbd-food">0</td><td id="gbd-mats">0</td><td id="gbd-ener">0</td>
                     </tr>
+
                     <tr class="row-red">
                         <td rowspan="2"><b>К</b></td>
                         <td>Час</td>
-                        <td id="grh0">0</td><td id="grh1">0</td><td id="grh2">0</td><td id="grh3">0</td><td id="grh4">0</td><td id="grh5">0</td><td id="grh6">0</td>
+                        <td id="grh0">0</td><td id="grh1">0</td><td id="grh2">0</td>
+                        <td id="grh3">0</td><td id="grh4">0</td><td id="grh5">0</td><td id="grh6">0</td>
                         <td id="grh-food">0</td><td id="grh-mats">0</td><td id="grh-ener">0</td>
                     </tr>
                     <tr class="row-red">
                         <td>24ч</td>
-                        <td id="grd0">0</td><td id="grd1">0</td><td id="grd2">0</td><td id="grd3">0</td><td id="grd4">0</td><td id="grd5">0</td><td id="grd6">0</td>
+                        <td id="grd0">0</td><td id="grd1">0</td><td id="grd2">0</td>
+                        <td id="grd3">0</td><td id="grd4">0</td><td id="grd5">0</td><td id="grd6">0</td>
                         <td id="grd-food">0</td><td id="grd-mats">0</td><td id="grd-ener">0</td>
                     </tr>
                 </tbody>
@@ -301,6 +258,43 @@ function updateStats() {
     updateGroCat(gbh, 'gbh'); updateGroCat(grh, 'grh');
     updateGroCat(gbh.map(v=>v*24), 'gbd'); updateGroCat(grh.map(v=>v*24), 'grd');
 }
+const toggle = document.getElementById('themeToggle');
+
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+    document.body.classList.add('dark');
+    toggle.textContent = '🌞';
+}
+
+toggle.onclick = () => {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    toggle.textContent = isDark ? '🌞' : '🌙';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+};
+const foodBlue = sb[0] + sb[1];
+const foodRed = sr[0] + sr[1];
+const enerBlue = sb[4] + sb[5] + sb[6];
+const enerRed = sr[4] + sr[5] + sr[6];
+const matsBlue = sb[2] + sb[3];
+const matsRed = sr[2] + sr[3];
+
+const maxFood = Math.max(foodBlue, foodRed, 1);
+const maxEner = Math.max(enerBlue, enerRed, 1);
+const maxMats = Math.max(matsBlue, matsRed, 1);
+
+document.getElementById('bar-food-blue').style.width = (foodBlue / maxFood * 100) + '%';
+document.getElementById('bar-food-red').style.width = (foodRed / maxFood * 100) + '%';
+
+document.getElementById('bar-ener-blue').style.width = (enerBlue / maxEner * 100) + '%';
+document.getElementById('bar-ener-red').style.width = (enerRed / maxEner * 100) + '%';
+
+document.getElementById('bar-mats-blue').style.width = (matsBlue / maxMats * 100) + '%';
+document.getElementById('bar-mats-red').style.width = (matsRed / maxMats * 100) + '%';
+
+document.getElementById('hud-blue-total').textContent = foodBlue + enerBlue + matsBlue;
+document.getElementById('hud-red-total').textContent = foodRed + enerRed + matsRed;
+
 </script>
 </body>
 </html>
