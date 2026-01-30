@@ -322,3 +322,41 @@ body.dark .top-hud {
     width: 0%;
     opacity: .7;
 }
+/* =====================
+   MOBILE FIX
+===================== */
+@media (max-width: 900px) {
+
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .map-wrapper {
+        width: 100%;
+        height: auto;
+        padding: 8px;
+    }
+
+    canvas {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 60vh;
+        touch-action: manipulation;
+    }
+
+    .sidebar {
+        width: 100%;
+        max-width: 100%;
+        border-left: none;
+        border-top: 1px solid var(--border);
+    }
+
+    table {
+        font-size: 11px;
+    }
+
+    .top-hud {
+        font-size: 11px;
+    }
+}
