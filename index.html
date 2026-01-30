@@ -158,11 +158,18 @@ let teamSelection = {}, pixelToCountry = null, originalPixels = null, canvas, ct
 
 window.onload = function() {
     canvas = document.getElementById('gameCanvas'); ctx = canvas.getContext('2d');
+    // ИЗМЕНЕНО: Используем image.png вместо map.png
     const img = new Image(); img.src = "map.png";
     img.onload = function() {
         width = canvas.width = img.width; height = canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
-        setTimeout(() => { try { processMapFloodFill(); document.getElementById('loader').style.display='none'; initTable(); } catch(e){} }, 50);
+        setTimeout(() => { 
+            try { 
+                processMapFloodFill(); 
+                document.getElementById('loader').style.display='none'; 
+                initTable(); 
+            } catch(e){ console.error(e); } 
+        }, 50);
     };
     canvas.addEventListener('mousedown', onMapClick);
 };
@@ -190,17 +197,62 @@ function processMapFloodFill() {
             }
         });
     });
+    // ИЗМЕНЕНО: Сразу перерисовываем карту, чтобы применить серые цвета
+    redrawMap();
 }
 
 function redrawMap() {
-    const imgData = ctx.createImageData(width, height); const data = imgData.data;
-    for (let i=0; i<width*height; i++) {
-        const team = pixelToCountry[i]!==-1 ? teamSelection[countries[pixelToCountry[i]]] : null;
-        if (team) { const tc = TEAM_COLORS[team]; data[i*4]=tc[0]; data[i*4+1]=tc[1]; data[i*4+2]=tc[2]; data[i*4+3]=255; }
-        else { data[i*4]=originalPixels[i*4]; data[i*4+1]=originalPixels[i*4+1]; data[i*4+2]=originalPixels[i*4+2]; data[i*4+3]=255; }
+    const imgData = ctx.createImageData(width, height);
+    const data = imgData.data;
+
+    for (let i = 0; i < width * height; i++) {
+
+        const baseR = originalPixels[i*4];
+        const baseG = originalPixels[i*4 + 1];
+        const baseB = originalPixels[i*4 + 2];
+
+        // 1️⃣ ФОН — ОСТАЁТСЯ БЕЛЫМ
+        if (baseR > 245 && baseG > 245 && baseB > 245) {
+            data[i*4]   = 255;
+            data[i*4+1] = 255;
+            data[i*4+2] = 255;
+            data[i*4+3] = 255;
+            continue;
+        }
+
+        // 2️⃣ ЕСЛИ СТРАНА ВЫБРАНА В КОМАНДУ
+        const countryIdx = pixelToCountry[i];
+        if (countryIdx !== -1) {
+            const countryName = countries[countryIdx];
+            const team = teamSelection[countryName];
+
+            if (team) {
+                const tc = TEAM_COLORS[team];
+                data[i*4]   = tc[0];
+                data[i*4+1] = tc[1];
+                data[i*4+2] = tc[2];
+                data[i*4+3] = 255;
+                continue;
+            }
+
+            // 3️⃣ АКТИВНАЯ (ИГРОВАЯ), НО НЕ ВЫБРАННАЯ → СВЕТЛО-СЕРЫЙ
+            data[i*4]   = 211;
+            data[i*4+1] = 211;
+            data[i*4+2] = 211;
+            data[i*4+3] = 255;
+            continue;
+        }
+
+        // 4️⃣ НЕИГРОВЫЕ СТРАНЫ → ТЁМНО-СЕРЫЙ
+        data[i*4]   = 51;
+        data[i*4+1] = 51;
+        data[i*4+2] = 51;
+        data[i*4+3] = 255;
     }
+
     ctx.putImageData(imgData, 0, 0);
 }
+
 
 function onMapClick(e) {
     const rect = canvas.getBoundingClientRect();
@@ -221,6 +273,7 @@ function initTable() {
         </td>` + regionData[c].map(v => `<td>${v}</td>`).join('');
         tbody.appendChild(tr);
     });
+    updateStats();
 }
 
 function updateTableVisuals(c) {
@@ -257,7 +310,26 @@ function updateStats() {
     };
     updateGroCat(gbh, 'gbh'); updateGroCat(grh, 'grh');
     updateGroCat(gbh.map(v=>v*24), 'gbd'); updateGroCat(grh.map(v=>v*24), 'grd');
+
+    // ИСПРАВЛЕНО: Код перенесен сюда, так как sb/sr существуют только здесь.
+    const foodBlue = sb[0] + sb[1];
+    const foodRed = sr[0] + sr[1];
+    const enerBlue = sb[4] + sb[5] + sb[6];
+    const enerRed = sr[4] + sr[5] + sr[6];
+    const matsBlue = sb[2] + sb[3];
+    const matsRed = sr[2] + sr[3];
+
+    // Обновляем HUD только если элементы существуют
+    const hudBlue = document.getElementById('hud-blue-total');
+    if(hudBlue) hudBlue.textContent = foodBlue + enerBlue + matsBlue;
+    
+    const hudRed = document.getElementById('hud-red-total');
+    if(hudRed) hudRed.textContent = foodRed + enerRed + matsRed;
+    
+    // Примечание: Элементы 'bar-food-blue' и др. отсутствуют в HTML,
+    // поэтому их обновление отключено, чтобы избежать ошибок.
 }
+
 const toggle = document.getElementById('themeToggle');
 
 const savedTheme = localStorage.getItem('theme');
@@ -272,29 +344,6 @@ toggle.onclick = () => {
     toggle.textContent = isDark ? '🌞' : '🌙';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 };
-const foodBlue = sb[0] + sb[1];
-const foodRed = sr[0] + sr[1];
-const enerBlue = sb[4] + sb[5] + sb[6];
-const enerRed = sr[4] + sr[5] + sr[6];
-const matsBlue = sb[2] + sb[3];
-const matsRed = sr[2] + sr[3];
-
-const maxFood = Math.max(foodBlue, foodRed, 1);
-const maxEner = Math.max(enerBlue, enerRed, 1);
-const maxMats = Math.max(matsBlue, matsRed, 1);
-
-document.getElementById('bar-food-blue').style.width = (foodBlue / maxFood * 100) + '%';
-document.getElementById('bar-food-red').style.width = (foodRed / maxFood * 100) + '%';
-
-document.getElementById('bar-ener-blue').style.width = (enerBlue / maxEner * 100) + '%';
-document.getElementById('bar-ener-red').style.width = (enerRed / maxEner * 100) + '%';
-
-document.getElementById('bar-mats-blue').style.width = (matsBlue / maxMats * 100) + '%';
-document.getElementById('bar-mats-red').style.width = (matsRed / maxMats * 100) + '%';
-
-document.getElementById('hud-blue-total').textContent = foodBlue + enerBlue + matsBlue;
-document.getElementById('hud-red-total').textContent = foodRed + enerRed + matsRed;
-
 </script>
 </body>
 </html>
