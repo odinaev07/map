@@ -171,7 +171,12 @@ window.onload = function() {
             } catch(e){ console.error(e); } 
         }, 50);
     };
-    canvas.addEventListener('mousedown', onMapClick);
+canvas.addEventListener('click', onMapClick);
+canvas.addEventListener('touchstart', function(e) {
+    const t = e.touches[0];
+    onMapClick(t);
+});
+
 };
 
 function processMapFloodFill() {
