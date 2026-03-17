@@ -422,3 +422,51 @@ function updateStats() {
     document.getElementById('hud-blue-total').textContent = sum(sb);
     document.getElementById('hud-red-total').textContent = sum(sr);
 }
+
+// ==========================================
+// 7. КАЛЬКУЛЯТОР СТРОИТЕЛЬСТВА
+// ==========================================
+function calcConstruction() {
+    const morale = parseFloat(document.getElementById('build-morale').value) || 0;
+    const currentHp = parseFloat(document.getElementById('build-hp').value) || 0;
+    
+    const buildData = document.getElementById('build-type').value.split('|');
+    const maxHp = parseFloat(buildData[0]);
+    const baseTotalHours = parseFloat(buildData[1]);
+
+    // Коэффициент k
+    let k = (morale <= 80) ? (0.2 + 0.01 * morale) : (0.6 + 0.005 * morale);
+
+    // Время на 1 HP
+    const actualTimePerHp = (baseTotalHours / maxHp) / k;
+    const totalHoursOnTimer = (maxHp - currentHp) * actualTimePerHp;
+    const timerAtNextHp = totalHoursOnTimer - actualTimePerHp;
+
+    const formatFull = (totalHours) => {
+        if (totalHours <= 0) return "0д 00:00:00";
+        const totalSeconds = Math.round(totalHours * 3600);
+        const d = Math.floor(totalSeconds / 86400);
+        const h = Math.floor((totalSeconds % 86400) / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = totalSeconds % 60;
+        return `${d}д ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    };
+
+    const nextHp = Math.floor(currentHp + 1);
+    document.getElementById('build-next-hp').innerText = nextHp > maxHp ? maxHp : nextHp;
+    document.getElementById('build-timer').innerText = formatFull(timerAtNextHp);
+    
+    const cycleSeconds = Math.round(actualTimePerHp * 3600);
+    const cM = Math.floor(cycleSeconds / 60);
+    const cS = cycleSeconds % 60;
+
+    document.getElementById('build-info').innerHTML = `
+        Финиш: ${formatFull(totalHoursOnTimer)}<br>
+        Скорость: 1 HP каждые ${cM}м ${cS}с (k: ${k.toFixed(3)})
+    `;
+}
+
+// Вызываем один раз при загрузке, чтобы обнулить значения
+window.addEventListener('DOMContentLoaded', (event) => {
+    if(document.getElementById('build-type')) calcConstruction();
+});
