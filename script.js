@@ -242,18 +242,41 @@ function updateStats() {
 // 5. КАЛЬКУЛЯТОР СТРОИТЕЛЬСТВА
 // ==========================================
 function calcConstruction() {
+    // Считываем значения полей (если пусто, берем 0)
     const morale = parseFloat(document.getElementById('build-morale').value) || 0;
     const currentHp = parseFloat(document.getElementById('build-hp').value) || 0;
     
-    const buildData = document.getElementById('build-type').value.split('|');
-    const maxHp = parseFloat(buildData[0]);
-    const baseTotalHours = parseFloat(buildData[1]);
+    // Находим выбранный объект в выпадающем списке
+    const buildSelect = document.getElementById('build-type');
+    const selectedOption = buildSelect.options[buildSelect.selectedIndex];
+    
+    let maxHp = 50;
+    let baseTotalHours = 8;
 
+    // "Всеядная" проверка: понимает и новый (50|8), и старый (data-time) формат HTML
+    const val = selectedOption.value;
+    if (val.includes('|')) {
+        const buildData = val.split('|');
+        maxHp = parseFloat(buildData[0]) || 50;
+        baseTotalHours = parseFloat(buildData[1]) || 8;
+    } else {
+        maxHp = parseFloat(val) || 50;
+        baseTotalHours = parseFloat(selectedOption.getAttribute('data-time')) || 8;
+    }
+
+    // Жесткая защита от деления на ноль
+    if (maxHp <= 0) maxHp = 1;
+
+    // Расчет коэффициента от морали
     let k = (morale <= 80) ? (0.2 + 0.01 * morale) : (0.6 + 0.005 * morale);
+    if (k <= 0) k = 1; 
+    
+    // Высчитываем время
     const actualTimePerHp = (baseTotalHours / maxHp) / k;
     const totalHoursOnTimer = (maxHp - currentHp) * actualTimePerHp;
     const timerAtNextHp = totalHoursOnTimer - actualTimePerHp;
 
+    // Конвертер времени в Дни Часы:Минуты:Секунды
     const formatFull = (totalHours) => {
         if (totalHours <= 0) return "0д 00:00:00";
         const totalSeconds = Math.round(totalHours * 3600);
@@ -264,6 +287,7 @@ function calcConstruction() {
         return `${d}д ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     };
 
+    // Вывод результатов на экран
     const nextHp = Math.floor(currentHp + 1);
     document.getElementById('build-next-hp').innerText = nextHp > maxHp ? maxHp : nextHp;
     document.getElementById('build-timer').innerText = formatFull(timerAtNextHp);
