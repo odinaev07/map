@@ -216,15 +216,43 @@
                 <div class="result-box" id="road-result">Ожидание...</div>
             </div>
 
-            <!-- 3. Анализатор Альянсов (Start) -->
-            <div class="card tool-card large-card">
-                <h3>🛡️ Анализатор Альянсов</h3>
-                <div class="form-group">
-                    <textarea id="alliance-data" rows="5" placeholder="Вставьте JSON данные из getGame&eID..."></textarea>
-                </div>
-                <button class="btn btn-primary full-width" onclick="processAllianceData()">Анализировать</button>
-                <div id="alliance-result" class="alliance-list-container"></div>
-            </div>
+<div class="card tool-card">
+    <h3>🏗️ Калькулятор строительства</h3>
+    <div class="form-group">
+        <label>Объект строительства:</label>
+        <select id="build-type" onchange="calcConstruction()">
+            <optgroup label="Крепости (50 HP)">
+                <option value="50|8">Крепость 1 ур (8ч)</option>
+                <option value="50|16">Крепость 2 ур (16ч)</option>
+                <option value="50|24">Крепость 3 ур (24ч)</option>
+                <option value="50|32">Крепость 4 ур (32ч)</option>
+                <option value="50|40">Крепость 5 ур (40ч)</option>
+            </optgroup>
+            <optgroup label="Инфраструктура">
+                <option value="40|48">Фабрика (40 HP / 48ч)</option>
+                <option value="40|24">Казармы (40 HP / 24ч)</option>
+                <option value="60|72">Железная дорога (60 HP / 72ч)</option>
+                <option value="60|24">Аэродром (60 HP / 24ч)</option>
+                <option value="60|72">Порт (60 HP / 72ч)</option>
+            </optgroup>
+        </select>
+    </div>
+    <div class="input-row">
+        <div class="form-group">
+            <label>Мораль (%) :</label>
+            <input type="number" id="build-morale" value="100" min="0" max="100" oninput="calcConstruction()">
+        </div>
+        <div class="form-group">
+            <label>Текущее HP:</label>
+            <input type="number" id="build-hp" value="0" min="0" oninput="calcConstruction()">
+        </div>
+    </div>
+    <div class="result-box" style="text-align: center;">
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Таймер при <span id="build-next-hp" style="color: var(--primary); font-weight: bold;">1</span> HP:</div>
+        <div id="build-timer" style="font-size: 1.6rem; font-weight: bold; font-family: monospace; margin: 5px 0;">0д 00:00:00</div>
+        <div id="build-info" style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4;"></div>
+    </div>
+</div>
 
             <!-- 4. Калькулятор Морали (Moral) -->
             <div class="card tool-card">
