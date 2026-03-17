@@ -208,3 +208,63 @@ th, td { padding: 6px; border: 1px solid var(--border); text-align: center; }
 th { background: var(--bg); color: var(--text-muted); }
 .row-blue { background: rgba(59, 130, 246, 0.08); }
 .row-red { background: rgba(239, 68, 68, 0.08); }
+/* СТИЛЬ КНОПОК */
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    box-shadow: 0 4px 0 rgba(37, 99, 235, 1); /* Объемная кнопка */
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 0 rgba(37, 99, 235, 1);
+}
+
+.btn-primary:active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
+/* СПЕЦИАЛЬНЫЙ БЛОК ДЛЯ СТРОИТЕЛЬСТВА */
+.build-res-container {
+    text-align: center;
+    background: var(--bg);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    border: 1px dashed var(--border);
+}
+
+#build-timer {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 800;
+    font-family: 'Courier New', monospace;
+    color: var(--primary);
+    margin: 5px 0;
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+.build-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+#build-info {
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--text);
+}
