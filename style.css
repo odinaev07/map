@@ -1,6 +1,3 @@
-/* =====================
-   ТЕМЫ (ДЕНЬ / НОЧЬ)
-===================== */
 :root {
     --bg: #eef2f6;
     --bg-soft: #ffffff;
@@ -14,7 +11,6 @@
     --blue-soft: #e8f0fe;
     --red-soft: #fde8e8;
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-
     --team-blue: #3b82f6;
     --team-red: #ef4444;
 }
@@ -32,7 +28,6 @@ body.dark {
     --blue-soft: rgba(59, 130, 246, 0.2);
     --red-soft: rgba(239, 68, 68, 0.2);
     --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-    
     --team-blue: #60a5fa;
     --team-red: #f87171;
 }
@@ -40,9 +35,6 @@ body.dark {
 * { box-sizing: border-box; }
 body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); transition: background .3s, color .3s; }
 
-/* =====================
-   LAYOUT & HUD
-===================== */
 .top-hud {
     position: fixed; top: 0; left: 0; right: 0; height: 60px;
     background: var(--bg-soft); border-bottom: 1px solid var(--border);
@@ -63,9 +55,7 @@ body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: var(-
 .nav-btn.active { background: var(--blue-soft); color: var(--primary); }
 
 .hud-center { display: flex; gap: 20px; }
-.hud-team {
-    padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; display: flex; gap: 8px;
-}
+.hud-team { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; display: flex; gap: 8px; }
 .hud-team.blue { background: var(--blue-soft); color: var(--team-blue); }
 .hud-team.red { background: var(--red-soft); color: var(--team-red); }
 
@@ -77,86 +67,44 @@ body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: var(-
 
 .main-content { padding-top: 60px; height: 100vh; overflow: hidden; }
 
-/* =====================
-   VIEW SECTIONS
-===================== */
 .view-section { height: 100%; width: 100%; display: none; overflow-y: auto; }
 .view-section.active { display: block; }
 
-/* MAP VIEW STYLES */
 .container-map { display: flex; height: calc(100vh - 60px); }
-.map-wrapper {
-    flex: 1; background: var(--bg); position: relative;
-    display: flex; align-items: center; justify-content: center; padding: 20px;
-}
+.map-wrapper { flex: 1; background: var(--bg); position: relative; display: flex; align-items: center; justify-content: center; padding: 20px; }
 canvas { max-width: 100%; max-height: 90%; border-radius: 12px; box-shadow: var(--shadow); }
-.loading-overlay {
-    position: absolute; inset: 0; background: rgba(0,0,0,0.5); color: #fff;
-    display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold;
-    backdrop-filter: blur(5px); z-index: 10;
-}
+.loading-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; backdrop-filter: blur(5px); z-index: 10; }
 
-.sidebar {
-    width: 600px; background: var(--bg-soft); border-left: 1px solid var(--border);
-    padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px;
-}
+.sidebar { width: 600px; background: var(--bg-soft); border-left: 1px solid var(--border); padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
 
-/* =====================
-   TOOLS GRID (CALCULATORS)
-===================== */
-.tools-grid {
-    padding: 30px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 25px;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.card {
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: 16px; padding: 20px; box-shadow: var(--shadow);
-}
+.tools-grid { padding: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; max-width: 1400px; margin: 0 auto; }
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); }
 .large-card { grid-column: span 2; }
 @media(max-width: 1000px) { .large-card { grid-column: span 1; } }
 
 h3 { margin: 0 0 15px 0; font-size: 16px; color: var(--text); border-bottom: 2px solid var(--border); padding-bottom: 10px; }
 
-/* FORMS */
 .form-group { margin-bottom: 12px; }
 .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text-muted); margin-bottom: 5px; }
 .input-row { display: flex; gap: 10px; }
 .input-row > * { flex: 1; }
 
 input[type="text"], input[type="number"], select, textarea {
-    width: 100%; padding: 10px; border-radius: 8px;
-    border: 1px solid var(--border); background: var(--input-bg); color: var(--text);
-    font-family: inherit; font-size: 14px;
+    width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); font-family: inherit; font-size: 14px;
 }
 input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary); border-color: transparent; }
 
 .form-check { display: flex; align-items: center; gap: 8px; margin: 10px 0; font-size: 14px; }
 .form-check input { width: 16px; height: 16px; }
 
-.btn {
-    border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
-    transition: transform 0.1s; font-size: 14px;
-}
+.btn { border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: transform 0.1s; font-size: 14px; }
 .btn:active { transform: scale(0.98); }
-.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary { background: var(--primary); color: #fff; width: 100%; padding: 12px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; transition: 0.2s; margin-top: 10px; }
 .btn-primary:hover { background: var(--primary-hover); }
-.full-width { width: 100%; margin-top: 10px; }
 
-.result-box {
-    margin-top: 15px; padding: 12px; border-radius: 8px;
-    background: var(--blue-soft); color: var(--text);
-    font-size: 14px; border: 1px solid var(--border);
-}
+.result-box { margin-top: 15px; padding: 12px; border-radius: 8px; background: var(--blue-soft); color: var(--text); font-size: 14px; border: 1px solid var(--border); }
 .result-box.scrollable { max-height: 150px; overflow-y: auto; }
 
-/* =====================
-   TABLES (GAME & ALLIANCE)
-===================== */
 .table-responsive { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 12px; }
 th, td { padding: 8px; border: 1px solid var(--border); text-align: center; }
@@ -167,24 +115,18 @@ th { background: var(--bg); color: var(--text-muted); font-weight: 600; }
 .alliance-list-container table { width: 100%; margin-top: 10px; }
 .alliance-list-container tr { cursor: pointer; }
 .alliance-list-container tr:hover { background: var(--bg); }
-
-/* Buttons for Team Selection */
 .btn-group { display: flex; justify-content: center; gap: 5px; }
-.team-select-btn {
-    width: 24px; height: 24px; border-radius: 4px; border: 1px solid var(--border);
-    cursor: pointer; font-size: 11px; opacity: 0.5;
-}
+.team-select-btn { width: 24px; height: 24px; border-radius: 4px; border: 1px solid var(--border); cursor: pointer; font-size: 11px; opacity: 0.5; }
 .team-select-btn.active { opacity: 1; transform: scale(1.1); box-shadow: 0 0 0 2px var(--text); }
 .ts-blue { background: var(--team-blue); color: #fff; }
 .ts-red { background: var(--team-red); color: #fff; }
 
-/* MOBILE ADAPTATION */
 @media (max-width: 900px) {
     .container-map { flex-direction: column; height: auto; }
     .map-wrapper { height: 350px; }
     .sidebar { width: 100%; height: auto; border-left: none; border-top: 1px solid var(--border); }
     .tools-grid { grid-template-columns: 1fr; padding: 15px; }
-    .hud-center { display: none; } /* Скрываем счет в шапке на мобилках */
+    .hud-center { display: none; } 
     .hud-left { gap: 10px; }
-    .nav-btn span { display: none; } /* Можно скрыть текст, оставить иконки */
+    .nav-btn span { display: none; } 
 }
