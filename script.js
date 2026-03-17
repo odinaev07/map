@@ -50,37 +50,7 @@ function calcTimeTravel() {
 }
 
 // ==========================================
-// 3. КАЛЬКУЛЯТОР ДОРОГИ
-// ==========================================
-function calcRoadTravel() {
-    const d1 = parseFloat(document.getElementById("road-dist1").value) || 0;
-    const d2 = parseFloat(document.getElementById("road-dist2").value) || 0;
-    const t1 = document.getElementById("road-terrain1").value;
-    const t2 = document.getElementById("road-terrain2").value;
-    const speed = parseFloat(document.getElementById("road-speed").value) || 1;
-    const march = document.getElementById("road-march").checked ? 1.5 : 1;
-
-    function getMod(type) {
-        if (type === 'friendly') return 0.7;
-        if (type === 'enemy') return 0.35;
-        return 1.0; 
-    }
-
-    const s1 = speed * march * getMod(t1);
-    const s2 = speed * march * getMod(t2);
-
-    if (s1 === 0 || s2 === 0) return;
-
-    const total = ((d1 / s1) + (d2 / s2)) * 3600;
-    const h = Math.floor(total / 3600);
-    const m = Math.floor((total % 3600) / 60);
-    const s = Math.round(total % 60);
-
-    document.getElementById("road-result").innerText = `Итого: ${h}ч ${m}мин ${s}сек`;
-}
-
-// ==========================================
-// 4. КАЛЬКУЛЯТОР МОРАЛИ
+// 3. КАЛЬКУЛЯТОР МОРАЛИ
 // ==========================================
 function calcMorale() {
     const p = parseFloat(document.getElementById('moral-val').value) || 0;
@@ -107,54 +77,7 @@ function calcMorale() {
 }
 
 // ==========================================
-// 5. АНАЛИЗАТОР АЛЬЯНСОВ
-// ==========================================
-let filteredAlliances = {};
-function processAllianceData() {
-    const raw = document.getElementById('alliance-data').value;
-    const resDiv = document.getElementById('alliance-result');
-    try {
-        const json = JSON.parse(raw);
-        const logins = json.result.logins || [];
-        const alliances = {};
-        
-        logins.forEach(p => {
-            const aName = p.allianceName || "Без альянса";
-            if(aName === "Без альянса" || aName === "Unknown Alliance") return;
-            if (!alliances[aName]) alliances[aName] = [];
-            alliances[aName].push({ name: p.login, id: p.siteUserID });
-        });
-
-        filteredAlliances = {};
-        for(let k in alliances) { if(alliances[k].length >= 2) filteredAlliances[k] = alliances[k]; }
-
-        const sorted = Object.keys(filteredAlliances).sort((a,b) => filteredAlliances[b].length - filteredAlliances[a].length);
-        let html = '<table><tr><th>Альянс</th><th>Игроков</th></tr>';
-        sorted.forEach(name => {
-            html += `<tr onclick="toggleAllyMembers(this, '${name}')"><td>${name}</td><td>${filteredAlliances[name].length}</td></tr>`;
-        });
-        html += '</table>';
-        resDiv.innerHTML = html;
-    } catch (e) {
-        resDiv.innerHTML = "<span style='color:red'>Ошибка JSON формата</span>";
-    }
-}
-
-function toggleAllyMembers(row, allyName) {
-    const next = row.nextSibling;
-    if(next && next.classList && next.classList.contains('member-list-row')) { next.remove(); return; }
-    const members = filteredAlliances[allyName];
-    const newRow = document.createElement('tr');
-    newRow.className = 'member-list-row';
-    let listHtml = '<td colspan="2" style="background:var(--bg); padding:10px;"><ul style="margin:0; padding-left:20px; text-align:left;">';
-    members.forEach(m => { listHtml += `<li>${m.name} <small>(ID: ${m.id})</small></li>`; });
-    listHtml += '</ul></td>';
-    newRow.innerHTML = listHtml;
-    row.parentNode.insertBefore(newRow, row.nextSibling);
-}
-
-// ==========================================
-// 6. ИГРОВАЯ КАРТА 
+// 4. ИГРОВАЯ КАРТА
 // ==========================================
 const countries = ["Sweden", "Germany", "Austria", "Italy", "France", "Britain", "Russia", "Turkey", "Morocco", "Spain"];
 const countrySeeds = { "Sweden": [[630, 242]], "Germany": [[517, 538]], "Austria": [[751, 667]], "Italy": [[548, 769], [467, 854], [581, 933]], "France": [[314, 650], [462, 800]], "Britain": [[349, 452], [257, 415]], "Russia": [[1051, 400]], "Turkey": [[904, 865], [866, 830]], "Morocco": [[229, 935]], "Spain": [[160, 788], [325, 844]] };
@@ -316,7 +239,7 @@ function updateStats() {
 }
 
 // ==========================================
-// 7. КАЛЬКУЛЯТОР СТРОИТЕЛЬСТВА (ИНТЕГРИРОВАН)
+// 5. КАЛЬКУЛЯТОР СТРОИТЕЛЬСТВА
 // ==========================================
 function calcConstruction() {
     const morale = parseFloat(document.getElementById('build-morale').value) || 0;
