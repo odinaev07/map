@@ -424,15 +424,13 @@ function updateStats() {
 }
 
 // ==========================================
-// 7. КАЛЬКУЛЯТОР СТРОИТЕЛЬСТВА
+// 7. КАЛЬКУЛЯТОР СТРОИТЕЛЬСТВА (Интеграция)
 // ==========================================
 function calcConstruction() {
-    // Получаем элементы
     const mInput = document.getElementById('build-morale');
     const hInput = document.getElementById('build-hp');
     const tInput = document.getElementById('build-type');
 
-    // Проверка на наличие элементов
     if (!mInput || !hInput || !tInput) return;
 
     const morale = parseFloat(mInput.value) || 0;
@@ -442,15 +440,15 @@ function calcConstruction() {
     const maxHp = parseFloat(buildData[0]);
     const baseTotalHours = parseFloat(buildData[1]);
 
-    // Коэффициент скорости (k)
+    // Коэффициент k по формулам S1914
     let k = (morale <= 80) ? (0.2 + 0.01 * morale) : (0.6 + 0.005 * morale);
 
-    // Расчет времени
+    // Расчет времени на 1 HP и остатка
     const actualTimePerHp = (baseTotalHours / maxHp) / k;
     const totalHoursLeft = (maxHp - currentHp) * actualTimePerHp;
     const timerAtNextHp = totalHoursLeft - actualTimePerHp;
 
-    // Форматирование времени Д:ЧЧ:ММ:СС
+    // Форматирование Д:ЧЧ:ММ:СС
     const formatFull = (totalHours) => {
         if (totalHours <= 0) return "0д 00:00:00";
         const totalSeconds = Math.round(totalHours * 3600);
@@ -458,12 +456,11 @@ function calcConstruction() {
         const h = Math.floor((totalSeconds % 86400) / 3600);
         const m = Math.floor((totalSeconds % 3600) / 60);
         const s = totalSeconds % 60;
-        
         const pad = (n) => String(n).padStart(2, '0');
         return `${d}д ${pad(h)}:${pad(m)}:${pad(s)}`;
     };
 
-    // Вывод в интерфейс
+    // Обновление интерфейса
     const nextHp = Math.floor(currentHp + 1);
     document.getElementById('build-next-hp').innerText = nextHp > maxHp ? maxHp : nextHp;
     document.getElementById('build-timer').innerText = formatFull(timerAtNextHp);
@@ -473,6 +470,6 @@ function calcConstruction() {
     const cS = cycleSec % 60;
 
     document.getElementById('build-info').innerHTML = 
-        `Финиш через: <b>${formatFull(totalHoursLeft)}</b><br>` +
-        `Скорость: 1 HP каждые <b>${cM}м ${cS}с</b>`;
+        `Финиш: <b>${formatFull(totalHoursLeft)}</b><br>` +
+        `Цикл 1 HP: <b>${cM}м ${cS}с</b>`;
 }
