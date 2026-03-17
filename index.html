@@ -219,9 +219,11 @@
 <div class="card tool-card">
 
     <div class="card tool-card">
-    <h3>🏗️ Калькулятор строительства</h3>
+ <div class="card tool-card">
+     
+    <h3>🏗️ Строительство</h3>
     <div class="form-group">
-        <label>Объект строительства:</label>
+        <label>Объект:</label>
         <select id="build-type">
             <optgroup label="Крепости (50 HP)">
                 <option value="50|8">Крепость 1 ур (8ч)</option>
@@ -233,7 +235,7 @@
             <optgroup label="Инфраструктура">
                 <option value="40|48">Фабрика (40 HP / 48ч)</option>
                 <option value="40|24">Казармы (40 HP / 24ч)</option>
-                <option value="60|72">Железная дорога (60 HP / 72ч)</option>
+                <option value="60|72">Ж/Д дорога (60 HP / 72ч)</option>
                 <option value="60|24">Аэродром (60 HP / 24ч)</option>
                 <option value="60|72">Порт (60 HP / 72ч)</option>
             </optgroup>
@@ -241,21 +243,21 @@
     </div>
     <div class="input-row">
         <div class="form-group">
-            <label>Мораль (%) :</label>
-            <input type="number" id="build-morale" value="100" min="0" max="100">
+            <label>Мораль (%):</label>
+            <input type="number" id="build-morale" value="100">
         </div>
         <div class="form-group">
-            <label>Текущее HP:</label>
-            <input type="number" id="build-hp" value="0" min="0">
+            <label>Тек. HP:</label>
+            <input type="number" id="build-hp" value="0">
         </div>
     </div>
     
-    <button class="btn btn-primary full-width" onclick="calcConstruction()">Рассчитать время</button>
+    <button class="btn btn-primary full-width" onclick="calcConstruction()">Рассчитать</button>
 
     <div class="result-box" style="text-align: center; margin-top: 15px;">
         <div style="font-size: 0.8rem; color: var(--text-muted);">Таймер при <span id="build-next-hp" style="color: var(--primary); font-weight: bold;">1</span> HP:</div>
-        <div id="build-timer" style="font-size: 1.6rem; font-weight: bold; font-family: monospace; margin: 5px 0;">0д 00:00:00</div>
-        <div id="build-info" style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4;">Введите данные и нажмите кнопку</div>
+        <div id="build-timer" style="font-size: 1.5rem; font-weight: bold; font-family: monospace; margin: 5px 0;">0д 00:00:00</div>
+        <div id="build-info" style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4;">Введите данные</div>
     </div>
 </div>
 
