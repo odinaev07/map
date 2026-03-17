@@ -3,27 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S1914 Construction Tracker</title>
+    <title>S1914 Construction Tracker Ultra</title>
     <style>
-        :root { --bg: #121212; --card: #1e1e1e; --accent: #4caf50; --text: #e0e0e0; --input-bg: #2a2a2a; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 20px; }
-        .card { background: var(--card); padding: 25px; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #333; }
-        h2 { color: var(--accent); margin-top: 0; font-size: 1.3rem; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
-        label { display: block; margin: 15px 0 5px; font-size: 0.85rem; color: #888; }
-        select, input { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #333; background: var(--input-bg); color: #fff; box-sizing: border-box; font-size: 1rem; outline: none; transition: border 0.2s; }
+        :root { --bg: #0d0d0d; --card: #161616; --accent: #00ff88; --text: #f0f0f0; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 20px; }
+        .card { background: var(--card); padding: 25px; border-radius: 15px; width: 100%; max-width: 450px; box-shadow: 0 0 30px rgba(0,0,0,0.7); border: 1px solid #222; }
+        h2 { color: var(--accent); margin: 0 0 20px; font-size: 1rem; text-align: center; letter-spacing: 3px; border-bottom: 1px solid #222; padding-bottom: 15px; }
+        label { display: block; margin: 15px 0 5px; font-size: 0.75rem; color: #777; text-transform: uppercase; }
+        select, input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #1a1a1a; color: #fff; font-size: 1rem; outline: none; }
         select:focus, input:focus { border-color: var(--accent); }
-        .result-box { margin-top: 20px; padding: 20px; background: #151515; border-radius: 8px; border-left: 4px solid var(--accent); }
-        .highlight { color: var(--accent); font-weight: bold; font-size: 1.6rem; margin: 5px 0; }
-        .info-text { font-size: 0.85rem; color: #777; margin-top: 10px; line-height: 1.5; border-top: 1px solid #333; padding-top: 10px; }
-        .hp-step { color: #aaa; font-size: 0.9rem; }
+        .result-box { margin-top: 25px; padding: 20px; background: #0a0a0a; border-radius: 10px; border: 1px solid #222; box-shadow: inset 0 0 10px #000; }
+        .hp-step { color: #888; font-size: 0.8rem; margin-bottom: 10px; text-align: center; }
+        .highlight { color: var(--accent); font-weight: bold; font-size: 1.8rem; font-family: 'Consolas', monospace; text-align: center; display: block; }
+        .info-text { font-size: 0.85rem; color: #555; margin-top: 20px; border-top: 1px solid #222; padding-top: 15px; line-height: 1.7; }
+        b { color: #999; }
+        .next-hp-val { color: var(--accent); font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>S1914 Construction</h2>
+    <h2>STRATEGY CALCULATOR</h2>
 
-    <label>Тип строения:</label>
+    <label>Объект строительства:</label>
     <select id="building" onchange="calc()">
         <optgroup label="Крепости (50 HP)">
             <option value="50|8">Крепость 1 ур (8ч)</option>
@@ -35,7 +37,7 @@
         <optgroup label="Инфраструктура">
             <option value="40|48">Фабрика (40 HP / 48ч)</option>
             <option value="40|24">Казармы (40 HP / 24ч)</option>
-            <option value="60|72">Ж/Д дорога (60 HP / 72ч)</option>
+            <option value="60|72">Железная дорога (60 HP / 72ч)</option>
             <option value="60|24">Аэродром (60 HP / 24ч)</option>
             <option value="60|72">Порт (60 HP / 72ч)</option>
         </optgroup>
@@ -44,12 +46,12 @@
     <label>Мораль провинции (%):</label>
     <input type="number" id="morale" value="100" min="0" max="100" oninput="calc()">
 
-    <label>Текущее HP (целое число):</label>
+    <label>Текущее HP (целое):</label>
     <input type="number" id="currentHp" value="18" min="0" oninput="calc()">
 
     <div class="result-box">
-        <div class="hp-step">Таймер при переходе на <span id="nextHpLabel" style="color:var(--accent)">19</span> HP:</div>
-        <div id="targetTimer" class="highlight">--ч --м</div>
+        <div class="hp-step">Таймер игры при <span class="next-hp-val" id="nextHpLabel">19</span> HP:</div>
+        <div id="targetTimer" class="highlight">0д 00:00:00</div>
         
         <div class="info-text" id="totalInfo"></div>
     </div>
@@ -64,40 +66,48 @@ function calc() {
     const maxHp = parseFloat(buildData[0]);
     const baseTotalHours = parseFloat(buildData[1]);
 
-    // Коэффициент k (твои формулы)
+    // Коэффициент k
     let k = (morale <= 80) ? (0.2 + 0.01 * morale) : (0.6 + 0.005 * morale);
 
-    // Базовое время на 1 единицу HP
-    const baseTimePerHp = baseTotalHours / maxHp;
+    // Время на 1 HP
+    const actualTimePerHp = (baseTotalHours / maxHp) / k;
 
-    // Фактическое время на 1 HP с учетом морали
-    const actualTimePerHp = baseTimePerHp / k;
-
-    // Общее время, которое сейчас должно быть на таймере (от текущего HP до конца)
+    // Таймер до полной готовности
     const totalHoursOnTimer = (maxHp - currentHp) * actualTimePerHp;
 
-    // Время, которое будет на таймере, когда добавится +1 HP
+    // Таймер в момент +1 HP
     const timerAtNextHp = totalHoursOnTimer - actualTimePerHp;
 
-    const format = (hrs) => {
-        if (hrs <= 0) return "0ч 00м";
-        const h = Math.floor(hrs);
-        const m = Math.round((hrs - h) * 60);
-        return `${h}ч ${String(m).padStart(2, '0')}м`;
+    // Универсальное форматирование: Дни, Часы:Мин:Сек
+    const formatFull = (totalHours) => {
+        if (totalHours <= 0) return "0д 00:00:00";
+        
+        const totalSeconds = Math.round(totalHours * 3600);
+        const d = Math.floor(totalSeconds / 86400);
+        const h = Math.floor((totalSeconds % 86400) / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = totalSeconds % 60;
+
+        return `${d}д ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     };
 
-    // Вывод результатов
+    // Вывод
     const nextHp = Math.floor(currentHp + 1);
     document.getElementById('nextHpLabel').innerText = nextHp > maxHp ? maxHp : nextHp;
-    document.getElementById('targetTimer').innerText = format(timerAtNextHp);
+    document.getElementById('targetTimer').innerText = formatFull(timerAtNextHp);
     
+    // Расчет цикла 1 HP
+    const cycleSeconds = Math.round(actualTimePerHp * 3600);
+    const cM = Math.floor(cycleSeconds / 60);
+    const cS = cycleSeconds % 60;
+
     document.getElementById('totalInfo').innerHTML = `
-        Всего до конца: <b>${format(totalHoursOnTimer)}</b><br>
-        1 HP строится: <b>${Math.floor(actualTimePerHp * 60)} мин.</b>
+        До полной готовности: <b>${formatFull(totalHoursOnTimer)}</b><br>
+        Скорость: 1 HP каждые <b>${cM}м ${cS}с</b><br>
+        Текущий коэфф. (k): <b>${k.toFixed(3)}</b>
     `;
 }
 
-// Запуск при старте
 calc();
 </script>
 
