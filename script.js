@@ -301,3 +301,37 @@ function calcConstruction() {
         1 HP каждые <b>${cM}м ${cS}с</b> (k: ${k.toFixed(3)})
     `;
 }
+// ==========================================
+// 6. КАЛЬКУЛЯТОР ПУТИ
+// ==========================================
+function calcRoad() {
+    const dist = parseFloat(document.getElementById('road-dist').value) || 0;
+    const baseSpeed = parseFloat(document.getElementById('road-speed').value) || 0;
+    const modifier = parseFloat(document.getElementById('road-type').value) || 1;
+
+    const resultBox = document.getElementById('road-result');
+
+    if (dist <= 0 || baseSpeed <= 0) {
+        resultBox.innerText = "Введите расстояние и скорость";
+        return;
+    }
+
+    // Итоговая скорость с учетом бонуса дороги
+    const finalSpeed = baseSpeed * modifier;
+    const totalHours = dist / finalSpeed;
+
+    // Конвертация в читаемый формат (Ч:М:С)
+    const h = Math.floor(totalHours);
+    const m = Math.floor((totalHours * 60) % 60);
+    const s = Math.round((totalHours * 3600) % 60);
+
+    // Форматирование вывода
+    const timeString = `${h}ч ${String(m).padStart(2, '0')}м ${String(s).padStart(2, '0')}с`;
+
+    resultBox.innerHTML = `
+        Время прибытия: <b>${timeString}</b><br>
+        <small style="color: var(--text-muted)">
+            Скорость: ${finalSpeed.toFixed(1)} км/ч (мод: ${modifier}x)
+        </small>
+    `;
+}
