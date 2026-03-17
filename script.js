@@ -302,36 +302,35 @@ function calcConstruction() {
     `;
 }
 // ==========================================
-// 6. КАЛЬКУЛЯТОР ПУТИ
+// 6. КАЛЬКУЛЯТОР ДОРОГИ (Doroga)
 // ==========================================
-function calcRoad() {
-    const dist = parseFloat(document.getElementById('road-dist').value) || 0;
-    const baseSpeed = parseFloat(document.getElementById('road-speed').value) || 0;
-    const modifier = parseFloat(document.getElementById('road-type').value) || 1;
+function calcRoadTravel() {
+    const d1 = parseFloat(document.getElementById("road-dist1").value) || 0;
+    const d2 = parseFloat(document.getElementById("road-dist2").value) || 0;
+    const t1 = document.getElementById("road-terrain1").value;
+    const t2 = document.getElementById("road-terrain2").value;
+    const speed = parseFloat(document.getElementById("road-speed").value) || 1;
+    const march = document.getElementById("road-march").checked ? 1.5 : 1;
 
-    const resultBox = document.getElementById('road-result');
-
-    if (dist <= 0 || baseSpeed <= 0) {
-        resultBox.innerText = "Введите расстояние и скорость";
-        return;
+    function getMod(type) {
+        if (type === 'friendly') return 0.7;
+        if (type === 'enemy') return 0.35;
+        return 1.0; // neutral
     }
 
-    // Итоговая скорость с учетом бонуса дороги
-    const finalSpeed = baseSpeed * modifier;
-    const totalHours = dist / finalSpeed;
+    const s1 = speed * march * getMod(t1);
+    const s2 = speed * march * getMod(t2);
 
-    // Конвертация в читаемый формат (Ч:М:С)
-    const h = Math.floor(totalHours);
-    const m = Math.floor((totalHours * 60) % 60);
-    const s = Math.round((totalHours * 3600) % 60);
+    if (s1 === 0 || s2 === 0) return;
 
-    // Форматирование вывода
-    const timeString = `${h}ч ${String(m).padStart(2, '0')}м ${String(s).padStart(2, '0')}с`;
+    const time1 = (d1 / s1) * 3600;
+    const time2 = (d2 / s2) * 3600;
+    const total = time1 + time2;
 
-    resultBox.innerHTML = `
-        Время прибытия: <b>${timeString}</b><br>
-        <small style="color: var(--text-muted)">
-            Скорость: ${finalSpeed.toFixed(1)} км/ч (мод: ${modifier}x)
-        </small>
-    `;
+    const h = Math.floor(total / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = Math.round(total % 60);
+
+    document.getElementById("road-result").innerText = 
+        `Итого: ${h}ч ${m}мин ${s}сек`;
 }
