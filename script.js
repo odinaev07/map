@@ -427,21 +427,30 @@ function updateStats() {
 // 7. КАЛЬКУЛЯТОР СТРОИТЕЛЬСТВА
 // ==========================================
 function calcConstruction() {
-    const morale = parseFloat(document.getElementById('build-morale').value) || 0;
-    const currentHp = parseFloat(document.getElementById('build-hp').value) || 0;
+    // Получаем элементы
+    const mInput = document.getElementById('build-morale');
+    const hInput = document.getElementById('build-hp');
+    const tInput = document.getElementById('build-type');
+
+    // Проверка на наличие элементов
+    if (!mInput || !hInput || !tInput) return;
+
+    const morale = parseFloat(mInput.value) || 0;
+    const currentHp = parseFloat(hInput.value) || 0;
+    const buildData = tInput.value.split('|');
     
-    const buildData = document.getElementById('build-type').value.split('|');
     const maxHp = parseFloat(buildData[0]);
     const baseTotalHours = parseFloat(buildData[1]);
 
-    // Коэффициент k
+    // Коэффициент скорости (k)
     let k = (morale <= 80) ? (0.2 + 0.01 * morale) : (0.6 + 0.005 * morale);
 
-    // Время на 1 HP
+    // Расчет времени
     const actualTimePerHp = (baseTotalHours / maxHp) / k;
-    const totalHoursOnTimer = (maxHp - currentHp) * actualTimePerHp;
-    const timerAtNextHp = totalHoursOnTimer - actualTimePerHp;
+    const totalHoursLeft = (maxHp - currentHp) * actualTimePerHp;
+    const timerAtNextHp = totalHoursLeft - actualTimePerHp;
 
+    // Форматирование времени Д:ЧЧ:ММ:СС
     const formatFull = (totalHours) => {
         if (totalHours <= 0) return "0д 00:00:00";
         const totalSeconds = Math.round(totalHours * 3600);
@@ -449,24 +458,21 @@ function calcConstruction() {
         const h = Math.floor((totalSeconds % 86400) / 3600);
         const m = Math.floor((totalSeconds % 3600) / 60);
         const s = totalSeconds % 60;
-        return `${d}д ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        
+        const pad = (n) => String(n).padStart(2, '0');
+        return `${d}д ${pad(h)}:${pad(m)}:${pad(s)}`;
     };
 
+    // Вывод в интерфейс
     const nextHp = Math.floor(currentHp + 1);
     document.getElementById('build-next-hp').innerText = nextHp > maxHp ? maxHp : nextHp;
     document.getElementById('build-timer').innerText = formatFull(timerAtNextHp);
     
-    const cycleSeconds = Math.round(actualTimePerHp * 3600);
-    const cM = Math.floor(cycleSeconds / 60);
-    const cS = cycleSeconds % 60;
+    const cycleSec = Math.round(actualTimePerHp * 3600);
+    const cM = Math.floor(cycleSec / 60);
+    const cS = cycleSec % 60;
 
-    document.getElementById('build-info').innerHTML = `
-        Финиш: ${formatFull(totalHoursOnTimer)}<br>
-        Скорость: 1 HP каждые ${cM}м ${cS}с (k: ${k.toFixed(3)})
-    `;
+    document.getElementById('build-info').innerHTML = 
+        `Финиш через: <b>${formatFull(totalHoursLeft)}</b><br>` +
+        `Скорость: 1 HP каждые <b>${cM}м ${cS}с</b>`;
 }
-
-// Вызываем один раз при загрузке, чтобы обнулить значения
-window.addEventListener('DOMContentLoaded', (event) => {
-    if(document.getElementById('build-type')) calcConstruction();
-});
