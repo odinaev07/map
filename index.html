@@ -4,14 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alliance Tools & Map</title>
-    <!-- Подключение стилей -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- =====================
-     ШАПКА (HUD + НАВИГАЦИЯ)
-===================== -->
 <header class="top-hud">
     <div class="hud-left">
         <span class="game-title">STRATEGY HUB</span>
@@ -21,16 +17,9 @@
         </nav>
     </div>
 
-    <!-- Показатели команд (видны только на карте, но оставим в шапке) -->
     <div class="hud-center" id="team-scores">
-        <div class="hud-team blue">
-            <span>СИНИЕ</span>
-            <span id="hud-blue-total">0</span>
-        </div>
-        <div class="hud-team red">
-            <span>КРАСНЫЕ</span>
-            <span id="hud-red-total">0</span>
-        </div>
+        <div class="hud-team blue"><span>СИНИЕ</span><span id="hud-blue-total">0</span></div>
+        <div class="hud-team red"><span>КРАСНЫЕ</span><span id="hud-red-total">0</span></div>
     </div>
 
     <div class="hud-right">
@@ -38,12 +27,8 @@
     </div>
 </header>
 
-<!-- =====================
-     КОНТЕНТ
-===================== -->
 <main class="main-content">
 
-    <!-- ВКЛАДКА 1: КАРТА (ИЗ INDEX.HTML) -->
     <div id="map-view" class="view-section active">
         <div class="container-map">
             <div class="map-wrapper">
@@ -52,15 +37,13 @@
             </div>
 
             <div class="sidebar">
-                <!-- РЕСУРСЫ -->
                 <div class="card">
                     <h3>Распределение ресурсов</h3>
                     <div class="table-responsive">
                         <table id="resourceTable">
                             <thead>
                                 <tr>
-                                    <th align="left">Страна</th>
-                                    <th width="70">Ком.</th>
+                                    <th align="left">Страна</th><th width="70">Ком.</th>
                                     <th>🌾</th><th>🐟</th><th>🔩</th><th>🪵</th><th>🪨</th><th>🛢️</th><th>🔥</th>
                                 </tr>
                             </thead>
@@ -68,8 +51,7 @@
                             <tfoot>
                                 <tr class="sum-row sum-blue">
                                     <td colspan="2">Итог Синие</td>
-                                    <td id="sb0">0</td><td id="sb1">0</td><td id="sb2">0</td>
-                                    <td id="sb3">0</td><td id="sb4">0</td><td id="sb5">0</td><td id="sb6">0</td>
+                                    <td id="sb0">0</td><td id="sb1">0</td><td id="sb2">0</td><td id="sb3">0</td><td id="sb4">0</td><td id="sb5">0</td><td id="sb6">0</td>
                                 </tr>
                                 <tr class="cat-row sum-blue">
                                     <td colspan="2">КАТЕГОРИИ</td>
@@ -77,11 +59,9 @@
                                     <td colspan="2" id="cat-sb-mats">0 <span class="cat-label">МАТ</span></td>
                                     <td colspan="3" id="cat-sb-ener">0 <span class="cat-label">ЭНЕРГ</span></td>
                                 </tr>
-
                                 <tr class="sum-row sum-red">
                                     <td colspan="2">Итог Красные</td>
-                                    <td id="sr0">0</td><td id="sr1">0</td><td id="sr2">0</td>
-                                    <td id="sr3">0</td><td id="sr4">0</td><td id="sr5">0</td><td id="sr6">0</td>
+                                    <td id="sr0">0</td><td id="sr1">0</td><td id="sr2">0</td><td id="sr3">0</td><td id="sr4">0</td><td id="sr5">0</td><td id="sr6">0</td>
                                 </tr>
                                 <tr class="cat-row sum-red">
                                     <td colspan="2">КАТЕГОРИИ</td>
@@ -94,48 +74,22 @@
                     </div>
                 </div>
 
-                <!-- ПРИРОСТ -->
                 <div class="card">
                     <h3>Прирост и итоги</h3>
                     <div class="table-responsive">
                         <table id="growthTable">
                             <thead>
                                 <tr>
-                                    <th>Ком</th>
-                                    <th>Время</th>
-                                    <th>🌾</th><th>🐟</th><th>🔩</th><th>🪵</th>
-                                    <th>🪨</th><th>🛢️</th><th>🔥</th>
+                                    <th>Ком</th><th>Время</th>
+                                    <th>🌾</th><th>🐟</th><th>🔩</th><th>🪵</th><th>🪨</th><th>🛢️</th><th>🔥</th>
                                     <th>ЕДА</th><th>МАТ</th><th>ЭНЕР</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="row-blue">
-                                    <td rowspan="2"><b>С</b></td>
-                                    <td>Час</td>
-                                    <td id="gbh0">0</td><td id="gbh1">0</td><td id="gbh2">0</td>
-                                    <td id="gbh3">0</td><td id="gbh4">0</td><td id="gbh5">0</td><td id="gbh6">0</td>
-                                    <td id="gbh-food">0</td><td id="gbh-mats">0</td><td id="gbh-ener">0</td>
-                                </tr>
-                                <tr class="row-blue">
-                                    <td>24ч</td>
-                                    <td id="gbd0">0</td><td id="gbd1">0</td><td id="gbd2">0</td>
-                                    <td id="gbd3">0</td><td id="gbd4">0</td><td id="gbd5">0</td><td id="gbd6">0</td>
-                                    <td id="gbd-food">0</td><td id="gbd-mats">0</td><td id="gbd-ener">0</td>
-                                </tr>
-
-                                <tr class="row-red">
-                                    <td rowspan="2"><b>К</b></td>
-                                    <td>Час</td>
-                                    <td id="grh0">0</td><td id="grh1">0</td><td id="grh2">0</td>
-                                    <td id="grh3">0</td><td id="grh4">0</td><td id="grh5">0</td><td id="grh6">0</td>
-                                    <td id="grh-food">0</td><td id="grh-mats">0</td><td id="grh-ener">0</td>
-                                </tr>
-                                <tr class="row-red">
-                                    <td>24ч</td>
-                                    <td id="grd0">0</td><td id="grd1">0</td><td id="grd2">0</td>
-                                    <td id="grd3">0</td><td id="grd4">0</td><td id="grd5">0</td><td id="grd6">0</td>
-                                    <td id="grd-food">0</td><td id="grd-mats">0</td><td id="grd-ener">0</td>
-                                </tr>
+                                <tr class="row-blue"><td rowspan="2"><b>С</b></td><td>Час</td><td id="gbh0">0</td><td id="gbh1">0</td><td id="gbh2">0</td><td id="gbh3">0</td><td id="gbh4">0</td><td id="gbh5">0</td><td id="gbh6">0</td><td id="gbh-food">0</td><td id="gbh-mats">0</td><td id="gbh-ener">0</td></tr>
+                                <tr class="row-blue"><td>24ч</td><td id="gbd0">0</td><td id="gbd1">0</td><td id="gbd2">0</td><td id="gbd3">0</td><td id="gbd4">0</td><td id="gbd5">0</td><td id="gbd6">0</td><td id="gbd-food">0</td><td id="gbd-mats">0</td><td id="gbd-ener">0</td></tr>
+                                <tr class="row-red"><td rowspan="2"><b>К</b></td><td>Час</td><td id="grh0">0</td><td id="grh1">0</td><td id="grh2">0</td><td id="grh3">0</td><td id="grh4">0</td><td id="grh5">0</td><td id="grh6">0</td><td id="grh-food">0</td><td id="grh-mats">0</td><td id="grh-ener">0</td></tr>
+                                <tr class="row-red"><td>24ч</td><td id="grd0">0</td><td id="grd1">0</td><td id="grd2">0</td><td id="grd3">0</td><td id="grd4">0</td><td id="grd5">0</td><td id="grd6">0</td><td id="grd-food">0</td><td id="grd-mats">0</td><td id="grd-ener">0</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -144,115 +98,106 @@
         </div>
     </div>
 
-    <!-- ВКЛАДКА 2: ИНСТРУМЕНТЫ (Калькуляторы) -->
     <div id="tools-view" class="view-section hidden">
         <div class="tools-grid">
             
-            <!-- 1. Калькулятор Времени (5km) -->
             <div class="card tool-card">
-                <h3>⏳ Калькулятор времени</h3>
+                <h3>⏳ Время хода</h3>
+                <div class="form-group"><label>Расстояние (км):</label><input type="number" id="time-distance" placeholder="50"></div>
+                <div class="form-group"><label>Скорость (км/ч):</label><input type="number" id="time-speed" placeholder="35"></div>
+                <div class="form-group"><label>Скорость карты:</label><input type="number" id="time-mapSpeed" value="1"></div>
                 <div class="form-group">
-                    <label>Расстояние (км):</label>
-                    <input type="number" id="time-distance" min="0" step="any" placeholder="Например: 50">
+                    <label>Территория:</label>
+                    <select id="time-faction"><option value="1">Своя (100%)</option><option value="0.7">Дружеская (70%)</option><option value="0.35">Вражеская (35%)</option></select>
                 </div>
-                <div class="form-group">
-                    <label>Скорость юнита (км/ч):</label>
-                    <input type="number" id="time-speed" min="0" step="any" placeholder="Например: 35">
-                </div>
-                <div class="form-group">
-                    <label>Скорость карты:</label>
-                    <input type="number" id="time-mapSpeed" min="1" step="any" value="1">
-                </div>
-                <div class="form-group">
-                    <label>Тип провинции:</label>
-                    <select id="time-faction">
-                        <option value="1">Своя провинция (100%)</option>
-                        <option value="0.7">Дружеская (70%)</option>
-                        <option value="0.35">Вражеская (35%)</option>
-                    </select>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" id="time-march">
-                    <label for="time-march">Марш-бросок (+50%)</label>
-                </div>
+                <div class="form-check"><input type="checkbox" id="time-march"><label for="time-march">Марш-бросок (+50%)</label></div>
                 <button class="btn btn-primary full-width" onclick="calcTimeTravel()">Рассчитать</button>
-                <div class="result-box" id="time-result">Ожидание данных...</div>
+                <div class="result-box" id="time-result">Ожидание...</div>
             </div>
 
-            <!-- 2. Калькулятор Дороги (Doroga) -->
             <div class="card tool-card">
-                <h3>🛣️ Калькулятор дороги</h3>
+                <h3>🛣️ Дорога (2 части)</h3>
                 <div class="form-group">
-                    <label>1-я половина (км) и Тип:</label>
+                    <label>1-я часть (км | тип):</label>
                     <div class="input-row">
                         <input type="number" id="road-dist1" placeholder="Км">
-                        <select id="road-terrain1">
-                            <option value="neutral">Своя</option>
-                            <option value="friendly">Друг</option>
-                            <option value="enemy">Враг</option>
-                        </select>
+                        <select id="road-terrain1"><option value="neutral">Своя</option><option value="friendly">Друг</option><option value="enemy">Враг</option></select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>2-я половина (км) и Тип:</label>
+                    <label>2-я часть (км | тип):</label>
                     <div class="input-row">
                         <input type="number" id="road-dist2" placeholder="Км">
-                        <select id="road-terrain2">
-                            <option value="neutral">Своя</option>
-                            <option value="friendly">Друг</option>
-                            <option value="enemy">Враг</option>
-                        </select>
+                        <select id="road-terrain2"><option value="neutral">Своя</option><option value="friendly">Друг</option><option value="enemy">Враг</option></select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Скорость армии (км/ч):</label>
-                    <input type="number" id="road-speed" placeholder="Скорость">
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" id="road-march">
-                    <label for="road-march">Марш-бросок</label>
-                </div>
-                <button class="btn btn-primary full-width" onclick="calcRoadTravel()">Рассчитать время</button>
+                <div class="form-group"><label>Скорость армии:</label><input type="number" id="road-speed" placeholder="км/ч"></div>
+                <div class="form-check"><input type="checkbox" id="road-march"><label for="road-march">Марш-бросок</label></div>
+                <button class="btn btn-primary full-width" onclick="calcRoadTravel()">Рассчитать</button>
                 <div class="result-box" id="road-result">Ожидание...</div>
             </div>
 
-            <!-- 4. Калькулятор Морали (Moral) -->
+            <div class="card tool-card large-card">
+                <h3>🛡️ Анализатор Альянсов</h3>
+                <div class="form-group"><textarea id="alliance-data" rows="5" placeholder="JSON данные..."></textarea></div>
+                <button class="btn btn-primary full-width" onclick="processAllianceData()">Анализировать</button>
+                <div id="alliance-result" class="alliance-list-container"></div>
+            </div>
+
             <div class="card tool-card">
-                <h3>❤️ Калькулятор морали</h3>
+                <h3>🏗️ Строительство</h3>
+                <div class="form-group">
+                    <label>Объект:</label>
+                    <select id="build-type">
+                        <optgroup label="Крепости (50 HP)">
+                            <option value="50|8">Крепость 1 ур (8ч)</option>
+                            <option value="50|16">Крепость 2 ур (16ч)</option>
+                            <option value="50|24">Крепость 3 ур (24ч)</option>
+                            <option value="50|32">Крепость 4 ур (32ч)</option>
+                            <option value="50|40">Крепость 5 ур (40ч)</option>
+                        </optgroup>
+                        <optgroup label="Инфраструктура">
+                            <option value="40|48">Фабрика (48ч)</option>
+                            <option value="40|24">Казармы (24ч)</option>
+                            <option value="60|72">Ж/Д / Порт (72ч)</option>
+                            <option value="60|24">Аэродром (24ч)</option>
+                        </optgroup>
+                    </select>
+                </div>
                 <div class="input-row">
-                    <div class="form-group">
-                        <label>Мораль своя (%):</label>
-                        <input type="number" id="moral-val">
-                    </div>
-                    <div class="form-group">
-                        <label>Мораль союзника:</label>
-                        <input type="number" id="moral-ally">
-                    </div>
+                    <div class="form-group"><label>Мораль (%):</label><input type="number" id="build-morale" value="100"></div>
+                    <div class="form-group"><label>Тек. HP:</label><input type="number" id="build-hp" value="0"></div>
+                </div>
+                <button class="btn btn-primary full-width" onclick="calcConstruction()">Рассчитать</button>
+                <div class="result-box" style="text-align: center;">
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Таймер при <span id="build-next-hp" style="color: var(--primary); font-weight: bold;">1</span> HP:</div>
+                    <div id="build-timer" style="font-size: 1.6rem; font-weight: bold; font-family: monospace; margin: 5px 0;">0д 00:00:00</div>
+                    <div id="build-info" style="font-size: 0.8rem; color: var(--text-muted);">Введите данные</div>
+                </div>
+            </div>
+
+            <div class="card tool-card">
+                <h3>❤️ Мораль и HP</h3>
+                <div class="input-row">
+                    <div class="form-group"><label>Своя (%):</label><input type="number" id="moral-val" value="100"></div>
+                    <div class="form-group"><label>Союзник:</label><input type="number" id="moral-ally"></div>
                 </div>
                 <div class="form-group">
-                    <label>Пехота (Текущ / Макс):</label>
-                    <div class="input-row">
-                        <input type="number" id="inf-hp" placeholder="HP">
-                        <input type="number" id="inf-max" placeholder="Max">
-                    </div>
+                    <label>Пехота (Тек / Макс):</label>
+                    <div class="input-row"><input type="number" id="inf-hp" placeholder="HP"><input type="number" id="inf-max" placeholder="Max"></div>
                 </div>
                 <div class="form-group">
-                    <label>Техника (Текущ / Макс):</label>
-                    <div class="input-row">
-                        <input type="number" id="tank-hp" placeholder="HP">
-                        <input type="number" id="tank-max" placeholder="Max">
-                    </div>
+                    <label>Техника (Тек / Макс):</label>
+                    <div class="input-row"><input type="number" id="tank-hp" placeholder="HP"><input type="number" id="tank-max" placeholder="Max"></div>
                 </div>
-                <button class="btn btn-primary full-width" onclick="calcMorale()">Рассчитать HP</button>
+                <button class="btn btn-primary full-width" onclick="calcMorale()">Рассчитать</button>
                 <div class="result-box scrollable" id="moral-result">Результат...</div>
             </div>
 
         </div>
     </div>
-
 </main>
 
-<!-- Подключение скриптов -->
 <script src="script.js"></script>
 </body>
 </html>
