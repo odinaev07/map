@@ -422,36 +422,3 @@ function updateStats() {
     document.getElementById('hud-blue-total').textContent = sum(sb);
     document.getElementById('hud-red-total').textContent = sum(sr);
 }
-function calculateBuild() {
-    const buildData = document.getElementById('buildType').value.split('|');
-    const maxHp = parseFloat(buildData[0]);
-    const baseHours = parseFloat(buildData[1]);
-    const morale = (parseFloat(document.getElementById('provinceMorale').value) || 100);
-    const currentHp = parseFloat(document.getElementById('currentHp').value) || 0;
-
-    if (currentHp >= maxHp) {
-        document.getElementById('targetTimer').innerText = "ГОТОВО";
-        return;
-    }
-
-    // Твоя формула: время зависит от морали (0.5 + M/200)
-    const k = 0.5 + (morale / 200);
-    const actualTimePerHp = (baseHours / maxHp) / k;
-
-    const format = (h) => {
-        const s = Math.round(h * 3600);
-        const dd = Math.floor(s / 86400);
-        const hh = Math.floor((s % 86400) / 3600);
-        const mm = Math.floor((s % 3600) / 60);
-        const ss = s % 60;
-        return `${dd}д ${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
-    };
-
-    const nextHp = Math.ceil(currentHp + 0.0001);
-    const hoursToNext = (nextHp - currentHp) * actualTimePerHp;
-    const totalRemaining = (maxHp - currentHp) * actualTimePerHp;
-
-    document.getElementById('nextHpLabel').innerText = nextHp;
-    document.getElementById('targetTimer').innerText = format(hoursToNext);
-    document.getElementById('cycleLabel').innerText = `Весь объект: ${format(totalRemaining)}`;
-}
