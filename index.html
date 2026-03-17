@@ -145,143 +145,64 @@
     </div>
 
     <!-- ВКЛАДКА 2: ИНСТРУМЕНТЫ (Калькуляторы) -->
-    <div id="tools-view" class="view-section hidden">
-        <div class="tools-grid">
-            
-            <!-- 1. Калькулятор Времени (5km) -->
-            <div class="card tool-card">
-                <h3>⏳ Калькулятор времени</h3>
-                <div class="form-group">
-                    <label>Расстояние (км):</label>
-                    <input type="number" id="time-distance" min="0" step="any" placeholder="Например: 50">
-                </div>
-                <div class="form-group">
-                    <label>Скорость юнита (км/ч):</label>
-                    <input type="number" id="time-speed" min="0" step="any" placeholder="Например: 35">
-                </div>
-                <div class="form-group">
-                    <label>Скорость карты:</label>
-                    <input type="number" id="time-mapSpeed" min="1" step="any" value="1">
-                </div>
-                <div class="form-group">
-                    <label>Тип провинции:</label>
-                    <select id="time-faction">
-                        <option value="1">Своя провинция (100%)</option>
-                        <option value="0.7">Дружеская (70%)</option>
-                        <option value="0.35">Вражеская (35%)</option>
-                    </select>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" id="time-march">
-                    <label for="time-march">Марш-бросок (+50%)</label>
-                </div>
-                <button class="btn btn-primary full-width" onclick="calcTimeTravel()">Рассчитать</button>
-                <div class="result-box" id="time-result">Ожидание данных...</div>
+ <div id="tools-view" class="view-section hidden">
+    <div class="tools-grid">
+        <div class="card tool-card">
+            <h3>⏳ Время</h3>
+            <div class="form-group"><label>Расстояние (км)</label><input type="number" id="time-distance"></div>
+            <div class="form-group"><label>Скорость (км/ч)</label><input type="number" id="time-speed" value="35"></div>
+            <div class="form-group">
+                <label>Тип</label>
+                <select id="time-faction"><option value="1">Своя (100%)</option><option value="0.7">Друг (70%)</option><option value="0.35">Враг (35%)</option></select>
             </div>
+            <button class="btn-primary" onclick="calcTimeTravel()">Рассчитать</button>
+            <div class="result-box" id="time-result">...</div>
+        </div>
 
-            <!-- 2. Калькулятор Дороги (Doroga) -->
-            <div class="card tool-card">
-                <h3>🛣️ Калькулятор дороги</h3>
-                <div class="form-group">
-                    <label>1-я половина (км) и Тип:</label>
-                    <div class="input-row">
-                        <input type="number" id="road-dist1" placeholder="Км">
-                        <select id="road-terrain1">
-                            <option value="neutral">Своя</option>
-                            <option value="friendly">Друг</option>
-                            <option value="enemy">Враг</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>2-я половина (км) и Тип:</label>
-                    <div class="input-row">
-                        <input type="number" id="road-dist2" placeholder="Км">
-                        <select id="road-terrain2">
-                            <option value="neutral">Своя</option>
-                            <option value="friendly">Друг</option>
-                            <option value="enemy">Враг</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Скорость армии (км/ч):</label>
-                    <input type="number" id="road-speed" placeholder="Скорость">
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" id="road-march">
-                    <label for="road-march">Марш-бросок</label>
-                </div>
-                <button class="btn btn-primary full-width" onclick="calcRoadTravel()">Рассчитать время</button>
-                <div class="result-box" id="road-result">Ожидание...</div>
+        <div class="card tool-card">
+            <h3>🛣️ Дорога</h3>
+            <div class="form-group"><label>Дистанция (км)</label><input type="number" id="road-dist"></div>
+            <div class="form-group"><label>Скорость</label><input type="number" id="road-speed" value="35"></div>
+            <button class="btn-primary" onclick="calcRoadTravel()">Рассчитать</button>
+            <div class="result-box" id="road-result">...</div>
+        </div>
+
+        <div class="card tool-card">
+            <h3>🏗️ Строительство</h3>
+            <div class="form-group">
+                <label>Объект</label>
+                <select id="buildType">
+                    <option value="50|8">Крепость 1 (8ч)</option>
+                    <option value="50|16">Крепость 2 (16ч)</option>
+                    <option value="50|24">Крепость 3 (24ч)</option>
+                    <option value="40|48">Фабрика (48ч)</option>
+                    <option value="60|72">Ж/Д / Порт (72ч)</option>
+                </select>
             </div>
-<!-- 2. Калькулятор строительства (Doroga) -->
-<div class="card tool-card">
-    <h3>🏗️ Строительство</h3>
-    <div class="form-group">
-        <label>Объект</label>
-        <select id="buildType">
-            <option value="50|8">Крепость 1 (8ч)</option>
-            <option value="50|16">Крепость 2 (16ч)</option>
-            <option value="50|24">Крепость 3 (24ч)</option>
-            <option value="50|32">Крепость 4 (32ч)</option>
-            <option value="50|40">Крепость 5 (40ч) </option>
-            <option value="40|48">Фабрика (48ч)</option>
-            <option value="60|72">Ж/Д / Порт (72ч)</option>
-        </select>
-    </div>
-    <div class="input-row">
-        <div class="form-group">
-            <label>Мораль %</label>
-            <input type="number" id="provinceMorale" value="100">
+            <div class="input-row">
+                <div class="form-group"><label>Мораль %</label><input type="number" id="provinceMorale" value="100"></div>
+                <div class="form-group"><label>Тек. HP</label><input type="number" id="currentHp" step="0.01" value="0"></div>
+            </div>
+            <button class="btn-primary" onclick="calculateBuild()">Рассчитать</button>
+            <div class="result-box" style="text-align: center;">
+                <div style="font-size: 0.7rem;">До +1 HP (<span id="nextHpLabel">1</span>):</div>
+                <div id="targetTimer" style="font-size: 1.3rem; font-weight: bold;">0д 00:00:00</div>
+                <div id="cycleLabel" style="font-size: 0.7rem; color: var(--primary);">...</div>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Тек. HP</label>
-            <input type="number" id="currentHp" step="0.01" value="0">
+
+        <div class="card tool-card">
+            <h3>❤️ Мораль</h3>
+            <div class="form-group"><label>Мораль своя %</label><input type="number" id="moral-val" value="100"></div>
+            <div class="form-group">
+                <label>Пехота (Тек/Макс)</label>
+                <div class="input-row"><input type="number" id="inf-hp"><input type="number" id="inf-max"></div>
+            </div>
+            <button class="btn-primary" onclick="calcMorale()">Рассчитать</button>
+            <div class="result-box" id="moral-result">...</div>
         </div>
-    </div>
-    <button class="btn-primary" onclick="calculateBuild()">Рассчитать</button>
-    
-    <div class="result-box" style="text-align: center;">
-        <div style="font-size: 0.75rem; color: var(--text-muted);">До +1 HP (<span id="nextHpLabel">1</span>):</div>
-        <div id="targetTimer" style="font-size: 1.4rem; font-weight: bold; margin: 5px 0;">0д 00:00:00</div>
-        <div id="cycleLabel" style="font-size: 0.7rem; color: var(--primary);">Цикл: --</div>
     </div>
 </div>
-
-            <!-- 4. Калькулятор Морали (Moral) -->
-            <div class="card tool-card">
-                <h3>❤️ Калькулятор морали</h3>
-                <div class="input-row">
-                    <div class="form-group">
-                        <label>Мораль своя (%):</label>
-                        <input type="number" id="moral-val">
-                    </div>
-                    <div class="form-group">
-                        <label>Мораль союзника:</label>
-                        <input type="number" id="moral-ally">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Пехота (Текущ / Макс):</label>
-                    <div class="input-row">
-                        <input type="number" id="inf-hp" placeholder="HP">
-                        <input type="number" id="inf-max" placeholder="Max">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Техника (Текущ / Макс):</label>
-                    <div class="input-row">
-                        <input type="number" id="tank-hp" placeholder="HP">
-                        <input type="number" id="tank-max" placeholder="Max">
-                    </div>
-                </div>
-                <button class="btn btn-primary full-width" onclick="calcMorale()">Рассчитать HP</button>
-                <div class="result-box scrollable" id="moral-result">Результат...</div>
-            </div>
-
-        </div>
-    </div>
 
 </main>
 
