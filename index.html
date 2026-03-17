@@ -10,7 +10,7 @@
 
 <header class="top-hud">
     <div class="hud-left">
-        <span class="game-title">STRATEGY HUB</span>
+        <span class="game-title">стратеги  HUB</span>
         <nav class="main-nav">
             <button class="nav-btn active" onclick="switchTab('map-view')">🗺️ Карта</button>
             <button class="nav-btn" onclick="switchTab('tools-view')">🧮 Инструменты</button>
@@ -29,17 +29,40 @@
     <div id="map-view" class="view-section active">
         <div class="container-map">
             <div class="map-wrapper">
+                <div id="loader" class="loading-overlay">Загрузка карты...</div>
                 <canvas id="gameCanvas"></canvas>
             </div>
             <div class="sidebar">
                 <div class="card">
-                    <h3>Ресурсы</h3>
+                    <h3>Распределение ресурсов</h3>
                     <div class="table-responsive">
                         <table id="resourceTable">
                             <thead>
-                                <tr><th>Страна</th><th>Ком</th><th>🌾</th><th>🐟</th><th>🔩</th><th>🪵</th><th>🪨</th><th>🛢️</th><th>🔥</th></tr>
+                                <tr>
+                                    <th>Страна</th><th>Ком.</th>
+                                    <th>🌾</th><th>🐟</th><th>🔩</th><th>🪵</th><th>🪨</th><th>🛢️</th><th>🔥</th>
+                                </tr>
                             </thead>
                             <tbody id="tableBody"></tbody>
+                            <tfoot>
+                                <tr class="sum-row sum-blue">
+                                    <td colspan="2">Синие</td>
+                                    <td id="sb0">0</td><td id="sb1">0</td><td id="sb2">0</td><td id="sb3">0</td><td id="sb4">0</td><td id="sb5">0</td><td id="sb6">0</td>
+                                </tr>
+                                <tr class="sum-row sum-red">
+                                    <td colspan="2">Красные</td>
+                                    <td id="sr0">0</td><td id="sr1">0</td><td id="sr2">0</td><td id="sr3">0</td><td id="sr4">0</td><td id="sr5">0</td><td id="sr6">0</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Прирост (Час / 24ч)</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <tr class="row-blue"><td>Синие (1ч)</td><td id="gbh-food">0</td><td id="gbh-mats">0</td><td id="gbh-ener">0</td></tr>
+                            <tr class="row-red"><td>Красные (1ч)</td><td id="grh-food">0</td><td id="grh-mats">0</td><td id="grh-ener">0</td></tr>
                         </table>
                     </div>
                 </div>
@@ -49,19 +72,18 @@
 
     <div id="tools-view" class="view-section hidden">
         <div class="tools-grid">
-            
             <div class="tool-card">
                 <h3>⏳ Время хода</h3>
                 <div class="form-group">
-                    <label>Расстояние (км):</label>
+                    <label>Расстояние (км)</label>
                     <input type="number" id="time-distance" placeholder="50">
                 </div>
                 <div class="form-group">
-                    <label>Скорость (км/ч):</label>
+                    <label>Скорость (км/ч)</label>
                     <input type="number" id="time-speed" placeholder="35">
                 </div>
                 <div class="form-group">
-                    <label>Территория:</label>
+                    <label>Территория</label>
                     <select id="time-faction">
                         <option value="1">Своя (100%)</option>
                         <option value="0.7">Дружеская (70%)</option>
@@ -69,42 +91,35 @@
                     </select>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" id="time-march"> <label for="time-march">Марш-бросок</label>
+                    <input type="checkbox" id="time-march"> <label for="time-march">Марш-бросок (+50%)</label>
                 </div>
                 <button class="btn-primary" onclick="calcTimeTravel()">Рассчитать</button>
-                <div class="result-box" id="time-result">...</div>
+                <div class="result-box" id="time-result">Ожидание...</div>
             </div>
 
             <div class="tool-card">
-                <h3>🛣️ Смешанный путь</h3>
+                <h3>🛣️ Калькулятор дороги</h3>
                 <div class="form-group">
-                    <label>1-я часть (км | тип):</label>
-                    <div class="input-row">
-                        <input type="number" id="road-dist1" placeholder="Км">
-                        <select id="road-terrain1">
-                            <option value="neutral">Своя</option>
-                            <option value="friendly">Друг</option>
-                            <option value="enemy">Враг</option>
-                        </select>
-                    </div>
+                    <label>Дистанция (км)</label>
+                    <input type="number" id="road-dist" placeholder="100">
                 </div>
                 <div class="form-group">
-                    <label>Скорость армии:</label>
-                    <input type="number" id="road-speed" placeholder="км/ч">
+                    <label>Скорость</label>
+                    <input type="number" id="road-speed" placeholder="35">
                 </div>
                 <button class="btn-primary" onclick="calcRoadTravel()">Рассчитать</button>
-                <div class="result-box" id="road-result">...</div>
+                <div class="result-box" id="road-result">Ожидание...</div>
             </div>
 
             <div class="tool-card">
                 <h3>🏗️ Строительство</h3>
                 <div class="form-group">
-                    <label>Объект:</label>
+                    <label>Объект</label>
                     <select id="build-type">
                         <option value="50|8">Крепость 1 (8ч)</option>
                         <option value="50|16">Крепость 2 (16ч)</option>
                         <option value="40|48">Фабрика (48ч)</option>
-                        <option value="60|72">Ж/Д (72ч)</option>
+                        <option value="60|72">Ж/Д / Порт (72ч)</option>
                     </select>
                 </div>
                 <div class="input-row">
@@ -113,8 +128,8 @@
                 </div>
                 <button class="btn-primary" onclick="calcConstruction()">Рассчитать</button>
                 <div class="result-box" style="text-align: center;">
-                    <div class="build-label">До +1 HP (<span id="build-next-hp">1</span>):</div>
-                    <div id="build-timer" style="font-size: 1.4rem; font-weight: bold;">0д 00:00:00</div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted);">До +1 HP (<span id="build-next-hp">1</span>):</div>
+                    <div id="build-timer" style="font-size: 1.4rem; font-weight: bold; margin: 5px 0;">0д 00:00:00</div>
                     <div id="build-info" style="font-size: 0.7rem;">Введите данные</div>
                 </div>
             </div>
@@ -122,20 +137,19 @@
             <div class="tool-card">
                 <h3>❤️ Мораль и HP</h3>
                 <div class="form-group">
-                    <label>Мораль своя (%):</label>
-                    <input type="number" id="moral-val" placeholder="100">
+                    <label>Мораль (%)</label>
+                    <input type="number" id="moral-val" value="100">
                 </div>
                 <div class="form-group">
-                    <label>Пехота (Тек / Макс):</label>
+                    <label>Пехота (Тек/Макс)</label>
                     <div class="input-row">
                         <input type="number" id="inf-hp" placeholder="HP">
                         <input type="number" id="inf-max" placeholder="Max">
                     </div>
                 </div>
                 <button class="btn-primary" onclick="calcMorale()">Рассчитать</button>
-                <div class="result-box" id="moral-result">...</div>
+                <div class="result-box" id="moral-result">Результат...</div>
             </div>
-
         </div>
     </div>
 </main>
