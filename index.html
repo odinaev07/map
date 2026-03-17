@@ -186,6 +186,27 @@
                         </optgroup>
                     </select>
                 </div>
+                <div class="card tool-card">
+    <h3>🚀 Калькулятор пути</h3>
+    <div class="form-group">
+        <label>Расстояние (км):</label>
+        <input type="number" id="road-dist" placeholder="Напр. 150">
+    </div>
+    <div class="form-group">
+        <label>Скорость юнита (км/ч):</label>
+        <input type="number" id="road-speed" placeholder="Напр. 36">
+    </div>
+    <div class="form-group">
+        <label>Тип поверхности:</label>
+        <select id="road-type">
+            <option value="1">Без дорог (1.0x)</option>
+            <option value="1.5">Обычная дорога (1.5x)</option>
+            <option value="2.5">Железная дорога (2.5x)</option>
+        </select>
+    </div>
+    <button class="btn-primary" onclick="calcRoad()">Рассчитать время</button>
+    <div class="result-box" id="road-result">Результат...</div>
+</div>
                 <div class="input-row">
                     <div class="form-group">
                         <label>Мораль (%):</label>
