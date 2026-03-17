@@ -133,27 +133,27 @@
         </div>
     </div>
 
-    <div id="tools-view" class="view-section hidden">
+<div id="tools-view" class="view-section hidden">
         <div class="tools-grid">
             
             <div class="card tool-card">
                 <h3>⏳ Время хода</h3>
                 <div class="form-group">
                     <label>Расстояние (км):</label>
-                    <input type="number" id="time-distance" min="0" step="any" placeholder="Например: 50">
+                    <input type="number" id="time-distance" placeholder="Напр: 50">
                 </div>
                 <div class="form-group">
                     <label>Скорость юнита (км/ч):</label>
-                    <input type="number" id="time-speed" min="0" step="any" placeholder="Например: 35">
+                    <input type="number" id="time-speed" placeholder="Напр: 35">
                 </div>
                 <div class="form-group">
                     <label>Скорость карты:</label>
-                    <input type="number" id="time-mapSpeed" min="1" step="any" value="1">
+                    <input type="number" id="time-mapSpeed" value="1">
                 </div>
                 <div class="form-group">
                     <label>Тип провинции:</label>
                     <select id="time-faction">
-                        <option value="1">Своя провинция (100%)</option>
+                        <option value="1">Своя (100%)</option>
                         <option value="0.7">Дружеская (70%)</option>
                         <option value="0.35">Вражеская (35%)</option>
                     </select>
@@ -162,31 +162,10 @@
                     <input type="checkbox" id="time-march">
                     <label for="time-march">Марш-бросок (+50%)</label>
                 </div>
-                <button class="btn btn-primary full-width" onclick="calcTimeTravel()">Рассчитать</button>
-                <div class="result-box" id="time-result">Ожидание данных...</div>
+                <button class="btn-primary" onclick="calcTimeTravel()">Рассчитать</button>
+                <div class="result-box" id="time-result">Ожидание...</div>
             </div>
 
-            <div class="card tool-card">
-                <h3>🏗️ Строительство</h3>
-                <div class="form-group">
-                    <label>Объект:</label>
-                    <select id="build-type">
-                        <optgroup label="Крепости (50 HP)">
-                            <option value="50|8">Крепость 1 ур (8ч)</option>
-                            <option value="50|16">Крепость 2 ур (16ч)</option>
-                            <option value="50|24">Крепость 3 ур (24ч)</option>
-                            <option value="50|32">Крепость 4 ур (32ч)</option>
-                            <option value="50|40">Крепость 5 ур (40ч)</option>
-                        </optgroup>
-                        <optgroup label="Инфраструктура">
-                            <option value="40|48">Фабрика (48ч)</option>
-                            <option value="40|24">Казармы (24ч)</option>
-                            <option value="60|72">Ж/Д / Порт (72ч)</option>
-                            <option value="60|24">Аэродром (24ч)</option>
-                        </optgroup>
-                    </select>
-                </div>
-            <!-- 2. Калькулятор Дороги (Doroga) -->
             <div class="card tool-card">
                 <h3>🛣️ Калькулятор дороги</h3>
                 <div class="form-group">
@@ -219,10 +198,30 @@
                     <input type="checkbox" id="road-march">
                     <label for="road-march">Марш-бросок</label>
                 </div>
-                <button class="btn btn-primary full-width" onclick="calcRoadTravel()">Рассчитать время</button>
+                <button class="btn-primary" onclick="calcRoadTravel()">Рассчитать путь</button>
                 <div class="result-box" id="road-result">Ожидание...</div>
             </div>
 
+            <div class="card tool-card">
+                <h3>🏗️ Строительство</h3>
+                <div class="form-group">
+                    <label>Объект:</label>
+                    <select id="build-type">
+                        <optgroup label="Крепости (50 HP)">
+                            <option value="50|8">Крепость 1 ур (8ч)</option>
+                            <option value="50|16">Крепость 2 ур (16ч)</option>
+                            <option value="50|24">Крепость 3 ур (24ч)</option>
+                            <option value="50|32">Крепость 4 ур (32ч)</option>
+                            <option value="50|40">Крепость 5 ур (40ч)</option>
+                        </optgroup>
+                        <optgroup label="Инфраструктура">
+                            <option value="40|48">Фабрика (48ч)</option>
+                            <option value="40|24">Казармы (24ч)</option>
+                            <option value="60|72">Ж/Д / Порт (72ч)</option>
+                            <option value="60|24">Аэродром (24ч)</option>
+                        </optgroup>
+                    </select>
+                </div>
                 <div class="input-row">
                     <div class="form-group">
                         <label>Мораль (%):</label>
@@ -233,13 +232,11 @@
                         <input type="number" id="build-hp" value="0">
                     </div>
                 </div>
-                
-                <button class="btn btn-primary full-width" onclick="calcConstruction()">Рассчитать</button>
-
+                <button class="btn-primary" onclick="calcConstruction()">Рассчитать стройку</button>
                 <div class="result-box" style="text-align: center;">
                     <div style="font-size: 0.8rem; color: var(--text-muted);">Таймер при <span id="build-next-hp" style="color: var(--primary); font-weight: bold;">1</span> HP:</div>
-                    <div id="build-timer" style="font-size: 1.6rem; font-weight: bold; font-family: monospace; margin: 5px 0;">0д 00:00:00</div>
-                    <div id="build-info" style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4;">Введите данные</div>
+                    <div id="build-timer" style="font-size: 1.4rem; font-weight: bold; font-family: monospace; margin: 5px 0;">0д 00:00:00</div>
+                    <div id="build-info" style="font-size: 0.75rem; color: var(--text-muted);">Введите данные</div>
                 </div>
             </div>
 
@@ -256,20 +253,20 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Пехота (Текущ / Макс):</label>
+                    <label>Пехота (Тек / Макс):</label>
                     <div class="input-row">
                         <input type="number" id="inf-hp" placeholder="HP">
                         <input type="number" id="inf-max" placeholder="Max">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Техника (Текущ / Макс):</label>
+                    <label>Техника (Тек / Макс):</label>
                     <div class="input-row">
                         <input type="number" id="tank-hp" placeholder="HP">
                         <input type="number" id="tank-max" placeholder="Max">
                     </div>
                 </div>
-                <button class="btn btn-primary full-width" onclick="calcMorale()">Рассчитать HP</button>
+                <button class="btn-primary" onclick="calcMorale()">Рассчитать HP</button>
                 <div class="result-box scrollable" id="moral-result">Результат...</div>
             </div>
 
