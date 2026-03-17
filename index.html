@@ -215,16 +215,39 @@
                 <button class="btn btn-primary full-width" onclick="calcRoadTravel()">Рассчитать время</button>
                 <div class="result-box" id="road-result">Ожидание...</div>
             </div>
-
-            <!-- 3. Анализатор Альянсов (Start) -->
-            <div class="card tool-card large-card">
-                <h3>🛡️ Анализатор Альянсов</h3>
-                <div class="form-group">
-                    <textarea id="alliance-data" rows="5" placeholder="Вставьте JSON данные из getGame&eID..."></textarea>
-                </div>
-                <button class="btn btn-primary full-width" onclick="processAllianceData()">Анализировать</button>
-                <div id="alliance-result" class="alliance-list-container"></div>
-            </div>
+<!-- 2. Калькулятор строительства (Doroga) -->
+<div class="card tool-card">
+    <h3>🏗️ Строительство</h3>
+    <div class="form-group">
+        <label>Объект</label>
+        <select id="buildType">
+            <option value="50|8">Крепость 1 (8ч)</option>
+            <option value="50|16">Крепость 2 (16ч)</option>
+            <option value="50|24">Крепость 3 (24ч)</option>
+            <option value="50|32">Крепость 4 (32ч)</option>
+            <option value="50|40">Крепость 5 (40ч) </option>
+            <option value="40|48">Фабрика (48ч)</option>
+            <option value="60|72">Ж/Д / Порт (72ч)</option>
+        </select>
+    </div>
+    <div class="input-row">
+        <div class="form-group">
+            <label>Мораль %</label>
+            <input type="number" id="provinceMorale" value="100">
+        </div>
+        <div class="form-group">
+            <label>Тек. HP</label>
+            <input type="number" id="currentHp" step="0.01" value="0">
+        </div>
+    </div>
+    <button class="btn-primary" onclick="calculateBuild()">Рассчитать</button>
+    
+    <div class="result-box" style="text-align: center;">
+        <div style="font-size: 0.75rem; color: var(--text-muted);">До +1 HP (<span id="nextHpLabel">1</span>):</div>
+        <div id="targetTimer" style="font-size: 1.4rem; font-weight: bold; margin: 5px 0;">0д 00:00:00</div>
+        <div id="cycleLabel" style="font-size: 0.7rem; color: var(--primary);">Цикл: --</div>
+    </div>
+</div>
 
             <!-- 4. Калькулятор Морали (Moral) -->
             <div class="card tool-card">
