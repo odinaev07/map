@@ -217,10 +217,12 @@
             </div>
 
 <div class="card tool-card">
+
+    <div class="card tool-card">
     <h3>🏗️ Калькулятор строительства</h3>
     <div class="form-group">
         <label>Объект строительства:</label>
-        <select id="build-type" onchange="calcConstruction()">
+        <select id="build-type">
             <optgroup label="Крепости (50 HP)">
                 <option value="50|8">Крепость 1 ур (8ч)</option>
                 <option value="50|16">Крепость 2 ур (16ч)</option>
@@ -240,17 +242,20 @@
     <div class="input-row">
         <div class="form-group">
             <label>Мораль (%) :</label>
-            <input type="number" id="build-morale" value="100" min="0" max="100" oninput="calcConstruction()">
+            <input type="number" id="build-morale" value="100" min="0" max="100">
         </div>
         <div class="form-group">
             <label>Текущее HP:</label>
-            <input type="number" id="build-hp" value="0" min="0" oninput="calcConstruction()">
+            <input type="number" id="build-hp" value="0" min="0">
         </div>
     </div>
-    <div class="result-box" style="text-align: center;">
+    
+    <button class="btn btn-primary full-width" onclick="calcConstruction()">Рассчитать время</button>
+
+    <div class="result-box" style="text-align: center; margin-top: 15px;">
         <div style="font-size: 0.8rem; color: var(--text-muted);">Таймер при <span id="build-next-hp" style="color: var(--primary); font-weight: bold;">1</span> HP:</div>
         <div id="build-timer" style="font-size: 1.6rem; font-weight: bold; font-family: monospace; margin: 5px 0;">0д 00:00:00</div>
-        <div id="build-info" style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4;">Введите данные для расчета</div>
+        <div id="build-info" style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4;">Введите данные и нажмите кнопку</div>
     </div>
 </div>
 
