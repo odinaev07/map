@@ -1,69 +1,270 @@
-// Переключение вкладок
-function switchTab(tabId) {
-    document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
-    document.getElementById(tabId).classList.remove('hidden');
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+/* =====================
+   ПЕРЕМЕННЫЕ И ОСНОВА
+===================== */
+:root {
+    --bg: #f0f2f5;
+    --bg-soft: #ffffff;
+    --bg-card: #ffffff;
+    --text: #1a1f36;
+    --text-muted: #697386;
+    --border: #e3e8ee;
+    --input-bg: #ffffff;
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --blue-soft: #e8f0fe;
+    --red-soft: #fde8e8;
+    --shadow: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1);
+    
+    --team-blue: #3b82f6;
+    --team-red: #ef4444;
 }
 
-// Тема
-const themeToggle = document.getElementById('themeToggle');
-themeToggle.onclick = () => {
-    document.body.classList.toggle('dark');
-    themeToggle.textContent = document.body.classList.contains('dark') ? '🌞' : '🌙';
-};
-
-// 1. Калькулятор Времени
-function calcTimeTravel() {
-    const dist = parseFloat(document.getElementById('time-distance').value) || 0;
-    const speed = parseFloat(document.getElementById('time-speed').value) || 1;
-    const factor = parseFloat(document.getElementById('time-faction').value);
-    const isMarch = document.getElementById('time-march').checked;
-    
-    let finalSpeed = speed * factor;
-    if (isMarch) finalSpeed *= 1.5;
-    
-    const hours = dist / finalSpeed;
-    document.getElementById('time-result').innerHTML = `Время в пути: <b>${hours.toFixed(2)} ч.</b>`;
+body.dark {
+    --bg: #0f172a;
+    --bg-soft: #1e293b;
+    --bg-card: #1e293b;
+    --text: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: #334155;
+    --input-bg: #0f172a;
+    --primary: #60a5fa;
+    --blue-soft: rgba(59, 130, 246, 0.15);
+    --shadow: 0 10px 15px rgba(0,0,0,0.3);
 }
 
-// 2. Калькулятор Строительства (ИСПРАВЛЕН)
-function calcConstruction() {
-    const buildData = document.getElementById('build-type').value.split('|');
-    const maxHp = parseFloat(buildData[0]);
-    const baseHours = parseFloat(buildData[1]);
-    const morale = parseFloat(document.getElementById('build-morale').value) / 100;
-    const currentHp = parseFloat(document.getElementById('build-hp').value) || 0;
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-    if (currentHp >= maxHp) {
-        document.getElementById('build-timer').innerText = "ЗАВЕРШЕНО";
-        return;
+body { 
+    margin: 0; 
+    font-family: 'Inter', -apple-system, system-ui, sans-serif; 
+    background: var(--bg); 
+    color: var(--text);
+    line-height: 1.5;
+    transition: background 0.3s;
+}
+
+/* =====================
+   LAYOUT (HUD)
+===================== */
+.top-hud {
+    position: fixed; top: 0; left: 0; right: 0; height: 60px;
+    background: var(--bg-soft); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; z-index: 1000; box-shadow: var(--shadow);
+}
+
+.hud-left { display: flex; align-items: center; gap: 15px; }
+.game-title { font-weight: 800; font-size: 14px; color: var(--primary); text-transform: uppercase; }
+
+.main-nav { display: flex; gap: 8px; }
+.nav-btn {
+    background: transparent; border: none; padding: 6px 12px;
+    color: var(--text-muted); font-weight: 600; cursor: pointer;
+    border-radius: 8px; transition: 0.2s; font-size: 13px;
+}
+.nav-btn.active { background: var(--blue-soft); color: var(--primary); }
+
+.main-content { padding-top: 60px; min-height: 100vh; }
+
+/* =====================
+   TOOLS GRID (4 БОК О БОК)
+===================== */
+.tools-grid {
+    display: grid;
+    /* По умолчанию 4 колонки */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px;
+    padding: 25px;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+.tool-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Выравнивает высоту всех карточек в ряду */
+}
+
+/* Обычная карточка занимает 1 колонку, анализатор сделаем чуть шире, если нужно */
+.large-card { grid-column: span 1; } 
+
+h3 { 
+    margin: 0 0 15px 0; 
+    font-size: 15px; 
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* =====================
+   ФОРМЫ И ЭЛЕМЕНТЫ
+===================== */
+.form-group { margin-bottom: 12px; }
+.form-group label { 
+    display: block; 
+    font-size: 11px; 
+    font-weight: 700; 
+    color: var(--text-muted); 
+    margin-bottom: 4px; 
+    text-transform: uppercase;
+}
+
+.input-row { display: flex; gap: 8px; margin-bottom: 8px; }
+
+input, select, textarea {
+    width: 100%; padding: 10px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--input-bg);
+    color: var(--text); font-size: 14px; transition: 0.2s;
+}
+
+input:focus, select:focus {
+    outline: none; border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--blue-soft);
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    margin-top: auto; /* Прижимает кнопку к низу карточки */
+    transition: 0.2s;
+}
+
+.btn-primary:hover { filter: brightness(1.1); }
+
+.result-box {
+    margin-top: 15px; padding: 12px; border-radius: 8px;
+    background: var(--bg); font-size: 13px;
+    border-left: 4px solid var(--primary);
+}
+
+/* =====================
+   АДАПТИВНОСТЬ (МОБИЛКИ)
+===================== */
+
+/* Планшеты: 2 в ряд */
+@media (max-width: 1200px) {
+    .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Телефоны: 1 в ряд */
+@media (max-width: 768px) {
+    .tools-grid {
+        grid-template-columns: 1fr;
+        padding: 15px;
+        gap: 15px;
     }
 
-    // Коэффициент ускорения от морали
-    const k = morale; 
-    const timePer1HP = (baseHours / maxHp) / k;
-    const hoursToNext = (Math.floor(currentHp + 1) - currentHp) * timePer1HP;
-
-    const format = (h) => {
-        const s = Math.round(h * 3600);
-        const hh = Math.floor(s / 3600);
-        const mm = Math.floor((s % 3600) / 60);
-        const ss = s % 60;
-        return `${hh}ч ${mm}м ${ss}с`;
-    };
-
-    document.getElementById('build-next-hp').innerText = Math.floor(currentHp + 1);
-    document.getElementById('build-timer').innerText = format(hoursToNext);
-    document.getElementById('build-info').innerText = `Всего осталось: ${format((maxHp - currentHp) * timePer1HP)}`;
+    .top-hud { padding: 0 10px; }
+    .hud-center { display: none; } /* Скрываем счет команд на мобилках */
+    
+    .nav-btn { padding: 6px 8px; font-size: 12px; }
+    
+    .tool-card { padding: 15px; }
+    
+    /* Скролл для таблиц внутри карточек */
+    .table-responsive {
+        margin: 0 -15px;
+        padding: 0 15px;
+        width: calc(100% + 30px);
+    }
 }
 
-// 3. Калькулятор Морали
-function calcMorale() {
-    const m = parseFloat(document.getElementById('moral-val').value) || 100;
-    const hp = parseFloat(document.getElementById('inf-hp').value) || 0;
-    const max = parseFloat(document.getElementById('inf-max').value) || 1;
-    
-    const result = (hp / max) * (m / 100) * 100;
-    document.getElementById('moral-result').innerHTML = `Эффективное состояние: <b>${result.toFixed(1)}%</b>`;
+/* =====================
+   MAP VIEW (СПЕЦИФИКА)
+===================== */
+.container-map { display: flex; height: calc(100vh - 60px); }
+.map-wrapper { flex: 1; position: relative; overflow: hidden; padding: 10px; background: #000; }
+canvas { max-width: 100%; height: auto; border-radius: 8px; cursor: crosshair; }
+
+.sidebar {
+    width: 450px; background: var(--bg-soft); border-left: 1px solid var(--border);
+    padding: 15px; overflow-y: auto;
+}
+
+@media (max-width: 1000px) {
+    .container-map { flex-direction: column; height: auto; }
+    .sidebar { width: 100%; border-left: none; border-top: 1px solid var(--border); }
+}
+
+/* Стили таблиц */
+table { width: 100%; border-collapse: collapse; font-size: 11px; }
+th, td { padding: 6px; border: 1px solid var(--border); text-align: center; }
+th { background: var(--bg); color: var(--text-muted); }
+.row-blue { background: rgba(59, 130, 246, 0.08); }
+.row-red { background: rgba(239, 68, 68, 0.08); }
+/* СТИЛЬ КНОПОК */
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    box-shadow: 0 4px 0 rgba(37, 99, 235, 1); /* Объемная кнопка */
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 0 rgba(37, 99, 235, 1);
+}
+
+.btn-primary:active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
+/* СПЕЦИАЛЬНЫЙ БЛОК ДЛЯ СТРОИТЕЛЬСТВА */
+.build-res-container {
+    text-align: center;
+    background: var(--bg);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    border: 1px dashed var(--border);
+}
+
+#build-timer {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 800;
+    font-family: 'Courier New', monospace;
+    color: var(--primary);
+    margin: 5px 0;
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+.build-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+#build-info {
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--text);
 }
