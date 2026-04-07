@@ -26,6 +26,7 @@ body {
     height: 100vh;
     display: flex;
     overflow: hidden;
+	padding-top: 60px;
 }
 
 /* ЛЕВАЯ ЧАСТЬ (КАРТА) */
@@ -208,4 +209,91 @@ td {
 ::-webkit-scrollbar-thumb {
     background: var(--border);
     border-radius: 10px;
+}
+/* ===== TOP HUD ===== */
+.top-hud {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+/* ЛЕВАЯ ЧАСТЬ */
+.hud-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.game-title {
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--primary);
+}
+
+/* НАВИГАЦИЯ */
+.main-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn {
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    padding: 6px 12px;
+
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 13px;
+
+    border-radius: 8px;
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.nav-btn:hover {
+    background: var(--bg);
+    color: var(--text);
+}
+
+.nav-btn.active {
+    background: rgba(59,130,246,0.2);
+    color: var(--primary);
+}
+
+/* ПРАВАЯ ЧАСТЬ */
+.hud-right {
+    display: flex;
+    align-items: center;
+}
+
+/* КНОПКА ТЕМЫ */
+.theme-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+
+    border: 1px solid var(--border);
+    background: var(--bg);
+
+    cursor: pointer;
+    font-size: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
