@@ -6,7 +6,20 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<header class="top-hud">
+    <div class="hud-left">
+        <span class="game-title">S1914 HUB</span>
 
+        <nav class="main-nav">
+            <a href="/index.html" class="nav-btn">🏠 Главная</a>
+            <button class="nav-btn active">🤖 Боты</button>
+        </nav>
+    </div>
+
+    <div class="hud-right">
+        <button id="themeToggle" class="theme-btn">🌙</button>
+    </div>
+</header>
     <div class="left">
         <div id="map-wrapper"></div>
         <div id="tooltip"></div>
@@ -264,6 +277,20 @@ function getRealProvinceIdFromSvgId(svgId) {
         }
 
         init();
+		const themeToggle = document.getElementById('themeToggle');
+
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+    document.body.classList.add('dark');
+    themeToggle.textContent = '🌞';
+}
+
+themeToggle.onclick = () => {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    themeToggle.textContent = isDark ? '🌞' : '🌙';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+};
     </script>
 </body>
 </html>
