@@ -1,0 +1,211 @@
+:root {
+    --bg: #0f172a;
+    --bg-soft: #1e293b;
+    --bg-card: #1e293b;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border: #334155;
+    --primary: #60a5fa;
+
+    --t1: #22c55e;
+    --t2: #3b82f6;
+    --bot: #64748b;
+
+    --shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+}
+
+/* ЛЕВАЯ ЧАСТЬ (КАРТА) */
+.left {
+    flex: 1;
+    background: var(--bg);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ПРАВАЯ ПАНЕЛЬ */
+.right {
+    width: 420px;
+    background: var(--bg-soft);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* ЗАГОЛОВКИ */
+h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+/* КАРТА */
+#map-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ПРОВИНЦИИ */
+svg path,
+svg polygon {
+    stroke: #020617;
+    stroke-width: 0.6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+svg path:hover,
+svg polygon:hover {
+    stroke: #fff;
+    stroke-width: 2px;
+    opacity: 0.85;
+}
+
+/* ВОДА */
+svg [id*="water"],
+svg [id*="text"],
+svg [id*="rect"],
+svg [id*="line"],
+svg [id*="poly"] {
+    fill: #020617 !important;
+    pointer-events: none;
+}
+
+/* КАРТОЧКИ СТРАН */
+.country-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.country-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.country-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* КНОПКИ */
+.btn-group {
+    display: flex;
+    gap: 5px;
+}
+
+.team-btn {
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: 0.2s;
+}
+
+.team-btn:hover {
+    opacity: 0.8;
+}
+
+.team-btn.active {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/* ЦВЕТА */
+.team-btn.t1 { background: var(--t1); color: #fff; }
+.team-btn.t2 { background: var(--t2); color: #fff; }
+.team-btn.bot { background: var(--bot); color: #fff; }
+
+/* СТАТИСТИКА */
+.team-stats {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.team-stats.t1 { border-left: 4px solid var(--t1); }
+.team-stats.t2 { border-left: 4px solid var(--t2); }
+.team-stats.bot { border-left: 4px solid var(--bot); }
+
+.team-title {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* ТАБЛИЦА */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+th {
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 4px 0;
+}
+
+td {
+    padding: 4px 0;
+}
+
+/* TOOLTIP */
+#tooltip {
+    position: absolute;
+    background: #020617;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    pointer-events: none;
+    display: none;
+    z-index: 100;
+    border: 1px solid var(--border);
+}
+
+/* СКРОЛЛ */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 10px;
+}

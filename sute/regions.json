@@ -1,0 +1,1143 @@
+[
+    {
+        "id": 0,
+        "name": "Кенигсберг",
+        "country": "Германская империя",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 1,
+        "name": "Страсбург",
+        "country": "Германская империя",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 2,
+        "name": "Гамбург",
+        "country": "Германская империя",
+        "resource": "oil",
+        "multiplier": 1
+    },
+    {
+        "id": 3,
+        "name": "Бреслау",
+        "country": "Германская империя",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 4,
+        "name": "Берлин",
+        "country": "Германская империя",
+        "resource": "coal",
+        "multiplier": 2
+    },
+    {
+        "id": 5,
+        "name": "Данциг",
+        "country": "Германская империя",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 6,
+        "name": "Ганновер",
+        "country": "Германская империя",
+        "resource": "gas",
+        "multiplier": 1
+    },
+    {
+        "id": 7,
+        "name": "Кельн",
+        "country": "Германская империя",
+        "resource": "coal",
+        "multiplier": 2
+    },
+    {
+        "id": 8,
+        "name": "Лейпциг",
+        "country": "Германская империя",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 9,
+        "name": "Штутгарт",
+        "country": "Германская империя",
+        "resource": "wood",
+        "multiplier": 2
+    },
+    {
+        "id": 10,
+        "name": "Мюнхен",
+        "country": "Германская империя",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 11,
+        "name": "Франкфурт",
+        "country": "Германская империя",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 12,
+        "name": "Инсбрук",
+        "country": "Австро-Венгрия",
+        "resource": "metal",
+        "multiplier": 2
+    },
+    {
+        "id": 13,
+        "name": "Линц",
+        "country": "Австро-Венгрия",
+        "resource": "wood",
+        "multiplier": 2
+    },
+    {
+        "id": 14,
+        "name": "Прага",
+        "country": "Австро-Венгрия",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 15,
+        "name": "Лемберг",
+        "country": "Австро-Венгрия",
+        "resource": "gas",
+        "multiplier": 1
+    },
+    {
+        "id": 16,
+        "name": "Краков",
+        "country": "Австро-Венгрия",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 17,
+        "name": "Вена",
+        "country": "Австро-Венгрия",
+        "resource": "wood",
+        "multiplier": 2
+    },
+    {
+        "id": 18,
+        "name": "Триест",
+        "country": "Австро-Венгрия",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 19,
+        "name": "Сараево",
+        "country": "Австро-Венгрия",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 20,
+        "name": "Будапешт",
+        "country": "Австро-Венгрия",
+        "resource": "wood",
+        "multiplier": 2
+    },
+    {
+        "id": 21,
+        "name": "Дебрецен",
+        "country": "Австро-Венгрия",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 22,
+        "name": "Кронштадт",
+        "country": "Австро-Венгрия",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 23,
+        "name": "Сегед",
+        "country": "Австро-Венгрия",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 24,
+        "name": "Копенгаген",
+        "country": "Дания",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 25,
+        "name": "Орхус",
+        "country": "Дания",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 26,
+        "name": "Ольборг",
+        "country": "Дания",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 27,
+        "name": "Рейкъявик",
+        "country": "Дания",
+        "resource": "oil",
+        "multiplier": 1
+    },
+    {
+        "id": 28,
+        "name": "Акюрейри",
+        "country": "Дания",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 29,
+        "name": "София",
+        "country": "Болгария",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 30,
+        "name": "Плевна",
+        "country": "Болгария",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 31,
+        "name": "Пловдив",
+        "country": "Болгария",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 32,
+        "name": "Варна",
+        "country": "Болгария",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 33,
+        "name": "Константинополь",
+        "country": "Османская империя",
+        "resource": "coal",
+        "multiplier": 2
+    },
+    {
+        "id": 34,
+        "name": "Салоники",
+        "country": "Османская империя",
+        "resource": "gas",
+        "multiplier": 1
+    },
+    {
+        "id": 35,
+        "name": "Янина",
+        "country": "Османская империя",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 36,
+        "name": "Нови-Базар",
+        "country": "Османская империя",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 37,
+        "name": "Скопье",
+        "country": "Османская империя",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 38,
+        "name": "Коних",
+        "country": "Османская империя",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 39,
+        "name": "Синоп",
+        "country": "Османская империя",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 40,
+        "name": "Анкара",
+        "country": "Османская империя",
+        "resource": "grain",
+        "multiplier": 2
+    },
+    {
+        "id": 41,
+        "name": "Шкодер",
+        "country": "Османская империя",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 42,
+        "name": "Бурса",
+        "country": "Османская империя",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 43,
+        "name": "Смирна",
+        "country": "Османская империя",
+        "resource": "metal",
+        "multiplier": 2
+    },
+    {
+        "id": 44,
+        "name": "Анталия",
+        "country": "Османская империя",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 45,
+        "name": "Белград",
+        "country": "Сербия",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 46,
+        "name": "Цетинье",
+        "country": "Сербия",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 47,
+        "name": "Ниск",
+        "country": "Сербия",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 48,
+        "name": "Бухарест",
+        "country": "Румыния",
+        "resource": "oil",
+        "multiplier": 1
+    },
+    {
+        "id": 49,
+        "name": "Крайова",
+        "country": "Румыния",
+        "resource": "gas",
+        "multiplier": 1
+    },
+    {
+        "id": 50,
+        "name": "Констанца",
+        "country": "Румыния",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 51,
+        "name": "Яссы",
+        "country": "Румыния",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 52,
+        "name": "Галац",
+        "country": "Румыния",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 53,
+        "name": "Пиргос",
+        "country": "Греция",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 54,
+        "name": "Афины",
+        "country": "Греция",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 55,
+        "name": "Лариса",
+        "country": "Греция",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 56,
+        "name": "Ханья",
+        "country": "Греция",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 57,
+        "name": "Никосия",
+        "country": "Греция",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 58,
+        "name": "Палермо",
+        "country": "Италия",
+        "resource": "oil",
+        "multiplier": 1
+    },
+    {
+        "id": 59,
+        "name": "Кальяри",
+        "country": "Италия",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 60,
+        "name": "Венеция",
+        "country": "Италия",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 61,
+        "name": "Милан",
+        "country": "Италия",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 62,
+        "name": "Генуя",
+        "country": "Италия",
+        "resource": "gas",
+        "multiplier": 1
+    },
+    {
+        "id": 63,
+        "name": "Болонья",
+        "country": "Италия",
+        "resource": "gas",
+        "multiplier": 2
+    },
+    {
+        "id": 64,
+        "name": "Рим",
+        "country": "Италия",
+        "resource": "coal",
+        "multiplier": 2
+    },
+    {
+        "id": 65,
+        "name": "Неаполь",
+        "country": "Италия",
+        "resource": "grain",
+        "multiplier": 2
+    },
+    {
+        "id": 66,
+        "name": "Реджо",
+        "country": "Италия",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 67,
+        "name": "Бриндизи",
+        "country": "Италия",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 68,
+        "name": "Турин",
+        "country": "Италия",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 69,
+        "name": "Флоренция",
+        "country": "Италия",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 70,
+        "name": "Аяччо",
+        "country": "Франция",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 71,
+        "name": "Цюрих",
+        "country": "Бельгия",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 72,
+        "name": "Берн",
+        "country": "Бельгия",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 73,
+        "name": "Брюссель",
+        "country": "Бельгия",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 74,
+        "name": "Антверпен",
+        "country": "Бельгия",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 75,
+        "name": "Гаага",
+        "country": "Бельгия",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 76,
+        "name": "Амстердам",
+        "country": "Бельгия",
+        "resource": "gas",
+        "multiplier": 1
+    },
+    {
+        "id": 77,
+        "name": "Париж",
+        "country": "Франция",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 78,
+        "name": "Тулуза",
+        "country": "Франция",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 79,
+        "name": "Марсель",
+        "country": "Франция",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 80,
+        "name": "Лион",
+        "country": "Франция",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 81,
+        "name": "Бордо",
+        "country": "Франция",
+        "resource": "grain",
+        "multiplier": 2
+    },
+    {
+        "id": 82,
+        "name": "Нант",
+        "country": "Франция",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 83,
+        "name": "Нанси",
+        "country": "Франция",
+        "resource": "metal",
+        "multiplier": 2
+    },
+    {
+        "id": 84,
+        "name": "Лилль",
+        "country": "Франция",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 85,
+        "name": "Реймс",
+        "country": "Франция",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 86,
+        "name": "Лимож",
+        "country": "Франция",
+        "resource": "grain",
+        "multiplier": 2
+    },
+    {
+        "id": 87,
+        "name": "Брест",
+        "country": "Франция",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 88,
+        "name": "Пальма",
+        "country": "Испания",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 89,
+        "name": "Мадрид",
+        "country": "Испания",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 90,
+        "name": "Барселона",
+        "country": "Испания",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 91,
+        "name": "Малага",
+        "country": "Испания",
+        "resource": "metal",
+        "multiplier": 2
+    },
+    {
+        "id": 92,
+        "name": "Сарагоса",
+        "country": "Испания",
+        "resource": "wood",
+        "multiplier": 2
+    },
+    {
+        "id": 93,
+        "name": "Сантьяго",
+        "country": "Испания",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 94,
+        "name": "Валенсия",
+        "country": "Испания",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 95,
+        "name": "Севилья",
+        "country": "Испания",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 96,
+        "name": "Бадахос",
+        "country": "Испания",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 97,
+        "name": "Саламанка",
+        "country": "Испания",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 98,
+        "name": "Мурсия",
+        "country": "Испания",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 99,
+        "name": "Бургос",
+        "country": "Испания",
+        "resource": "metal",
+        "multiplier": 2
+    },
+    {
+        "id": 100,
+        "name": "Порту",
+        "country": "Португалия",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 101,
+        "name": "Лиссабон",
+        "country": "Португалия",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 102,
+        "name": "Лагуш",
+        "country": "Португалия",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 103,
+        "name": "Коимбра",
+        "country": "Португалия",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 104,
+        "name": "Марокко",
+        "country": "Марокко",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 105,
+        "name": "Касабланка",
+        "country": "Марокко",
+        "resource": "oil",
+        "multiplier": 2
+    },
+    {
+        "id": 106,
+        "name": "Танжер",
+        "country": "Марокко",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 107,
+        "name": "Фес",
+        "country": "Марокко",
+        "resource": "oil",
+        "multiplier": 2
+    },
+    {
+        "id": 108,
+        "name": "Оран",
+        "country": "Марокко",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 109,
+        "name": "Алжир",
+        "country": "Марокко",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 110,
+        "name": "Константина",
+        "country": "Марокко",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 111,
+        "name": "Буле",
+        "country": "Марокко",
+        "resource": "gas",
+        "multiplier": 2
+    },
+    {
+        "id": 112,
+        "name": "Бон",
+        "country": "Марокко",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 113,
+        "name": "Тунис",
+        "country": "Португалия",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 114,
+        "name": "Кайруан",
+        "country": "Португалия",
+        "resource": "oil",
+        "multiplier": 1
+    },
+    {
+        "id": 115,
+        "name": "Мелилья",
+        "country": "Марокко",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 116,
+        "name": "Лондон",
+        "country": "Великобритания",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 117,
+        "name": "Ливерпуль",
+        "country": "Великобритания",
+        "resource": "metal",
+        "multiplier": 2
+    },
+    {
+        "id": 118,
+        "name": "Манчестер",
+        "country": "Великобритания",
+        "resource": "coal",
+        "multiplier": 2
+    },
+    {
+        "id": 119,
+        "name": "Глазго",
+        "country": "Великобритания",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 120,
+        "name": "Бирмингем",
+        "country": "Великобритания",
+        "resource": "coal",
+        "multiplier": 2
+    },
+    {
+        "id": 121,
+        "name": "Инвернесс",
+        "country": "Великобритания",
+        "resource": "gas",
+        "multiplier": 1
+    },
+    {
+        "id": 122,
+        "name": "Белфаст",
+        "country": "Великобритания",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 123,
+        "name": "Дублин",
+        "country": "Великобритания",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 124,
+        "name": "Лимерик",
+        "country": "Великобритания",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 125,
+        "name": "Портсмут",
+        "country": "Великобритания",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 126,
+        "name": "Кардифф",
+        "country": "Великобритания",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 127,
+        "name": "Ньюкасл",
+        "country": "Великобритания",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 128,
+        "name": "Кальмар",
+        "country": "Швеция",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 129,
+        "name": "Гетеборг",
+        "country": "Швеция",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 130,
+        "name": "Стокгольм",
+        "country": "Швеция",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 131,
+        "name": "Карлштадт",
+        "country": "Швеция",
+        "resource": "wood",
+        "multiplier": 2
+    },
+    {
+        "id": 132,
+        "name": "Сундсвалль",
+        "country": "Швеция",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 133,
+        "name": "Умео",
+        "country": "Швеция",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 134,
+        "name": "Лулео",
+        "country": "Швеция",
+        "resource": "metal",
+        "multiplier": 2
+    },
+    {
+        "id": 135,
+        "name": "Тромсе",
+        "country": "Швеция",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 136,
+        "name": "Эгерсунд",
+        "country": "Швеция",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 137,
+        "name": "Кристиания",
+        "country": "Швеция",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 138,
+        "name": "Берген",
+        "country": "Швеция",
+        "resource": "oil",
+        "multiplier": 1
+    },
+    {
+        "id": 139,
+        "name": "Тронхейм",
+        "country": "Швеция",
+        "resource": "fish",
+        "multiplier": 2
+    },
+    {
+        "id": 140,
+        "name": "Торнио",
+        "country": "Дания",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 141,
+        "name": "Николайштадт",
+        "country": "Дания",
+        "resource": "wood",
+        "multiplier": 2
+    },
+    {
+        "id": 142,
+        "name": "Куопио",
+        "country": "Дания",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 143,
+        "name": "Гельсингфорс",
+        "country": "Дания",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 144,
+        "name": "Выборг",
+        "country": "Дания",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 145,
+        "name": "Лодзь",
+        "country": "Польша",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 146,
+        "name": "Варшава",
+        "country": "Польша",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 147,
+        "name": "Каунас",
+        "country": "Польша",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 148,
+        "name": "Люблин",
+        "country": "Польша",
+        "resource": "gas",
+        "multiplier": 1
+    },
+    {
+        "id": 149,
+        "name": "Кишинев",
+        "country": "Россия",
+        "resource": "grain",
+        "multiplier": 2
+    },
+    {
+        "id": 150,
+        "name": "Севастополь",
+        "country": "Россия",
+        "resource": "coal",
+        "multiplier": 1
+    },
+    {
+        "id": 151,
+        "name": "Киев",
+        "country": "Россия",
+        "resource": "grain",
+        "multiplier": 2
+    },
+    {
+        "id": 152,
+        "name": "Харьков",
+        "country": "Россия",
+        "resource": "grain",
+        "multiplier": 1
+    },
+    {
+        "id": 153,
+        "name": "Вильно",
+        "country": "Россия",
+        "resource": "wood",
+        "multiplier": 1
+    },
+    {
+        "id": 154,
+        "name": "Москва",
+        "country": "Россия",
+        "resource": "oil",
+        "multiplier": 1
+    },
+    {
+        "id": 155,
+        "name": "Санкт-Петербург",
+        "country": "Россия",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 156,
+        "name": "Рига",
+        "country": "Россия",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 157,
+        "name": "Вологда",
+        "country": "Россия",
+        "resource": "oil",
+        "multiplier": 2
+    },
+    {
+        "id": 158,
+        "name": "Смоленск",
+        "country": "Россия",
+        "resource": "metal",
+        "multiplier": 1
+    },
+    {
+        "id": 159,
+        "name": "Архангельск",
+        "country": "Россия",
+        "resource": "gas",
+        "multiplier": 1
+    },
+    {
+        "id": 160,
+        "name": "Кандалакша",
+        "country": "Россия",
+        "resource": "fish",
+        "multiplier": 1
+    },
+    {
+        "id": 329,
+        "name": "Рабат",
+        "country": "Марокко",
+        "resource": "gas",
+        "multiplier": 1
+    },
+    {
+        "id": 330,
+        "name": "Джельфа",
+        "country": "Марокко",
+        "resource": "grain",
+        "multiplier": 1
+    }
+]

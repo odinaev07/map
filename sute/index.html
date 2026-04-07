@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>S1914 ANALYZER: INTERACTIVE MAP (FIXED)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="left">
+        <div id="map-wrapper"></div>
+        <div id="tooltip"></div>
+    </div>
+
+    <div class="right">
+        <h2>Активные страны (12 пров.)</h2>
+        <div id="countries-container" class="countries-list"></div>
+
+        <h2>Статистика сторон</h2>
+        <div id="stats-container"></div>
+    </div>
+
+    <script>
+        let regionOwners = {}; 
+        let regionsData = {}; 
+        let countriesData = {}; 
+        let activeCountries = []; 
+
+        const TEAM_NAMES = {
+            1: 'Команда 1',
+            2: 'Команда 2',
+            0: 'Боты/Нейтралы'
+        };
+
+        async function init() {
+            try {
+                // 1. Load Region Data (regions.json)
+                const regRes = await fetch('regions.json');
+                const regArray = await regRes.json();
+                
+                regArray.forEach(r => {
+                    regionsData[r.id] = r;
+                    regionOwners[r.id] = 0; // Default to Bot/Neutral
+
+                    if (!countriesData[r.country]) {
+                        countriesData[r.country] = {
+                            name: r.country,
+                            regions: [],
+                            team: 0
+                        };
+                    }
+                    countriesData[r.country].regions.push(r.id);
+                });
+
+                // Separate countries with 12 regions (e.g., Germany)
+                for (let cName in countriesData) {
+                    if (countriesData[cName].regions.length === 12) {
+                        activeCountries.push(countriesData[cName]);
+                    }
+                }
+
+                // 2. Load SVG Map (map.svg)
+                const mapRes = await fetch('map.svg');
+                const mapSvg = await mapRes.text();
+                document.getElementById('map-wrapper').innerHTML = mapSvg;
+
+                renderCountriesUI();
+                setupMapListeners(); // Apply logic to provinces
+                updateAll(); // Initial statistics
+
+            } catch (err) {
+                console.error("Critical loading error:", err);
+                document.getElementById('stats-container').innerHTML = "<p style='color:red'>Ошибка загрузки файлов map.svg или regions.json. Запустите через локальный сервер.</p>";
+            }
+        }
+
+        function renderCountriesUI() {
+            const container = document.getElementById('countries-container');
+            container.innerHTML = '';
+
+            // Sort active countries alphabetically
+            activeCountries.sort((a,b) => a.name.localeCompare(b.name));
+
+            activeCountries.forEach(country => {
+                const safeId = country.name.replace(/\s+/g, '-');
+                const div = document.createElement('div');
+                div.className = 'country-item';
+                div.id = 'panel-' + safeId;
+                
+                div.innerHTML = `
+                    <div class="country-name">${country.name}</div>
+                    <div class="btn-group">
+                        <button class="team-btn t1" onclick="setCountryTeam('${country.name}', 1)">T1</button>
+                        <button class="team-btn t2" onclick="setCountryTeam('${country.name}', 2)">T2</button>
+                        <button class="team-btn bot active" onclick="setCountryTeam('${country.name}', 0)">BOT</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // --- THE FIX IS HERE ---
+        // Function to extract province ID from SVG ID, ensuring we only paint real provinces
+// Исправленная функция поиска ID
+function getRealProvinceIdFromSvgId(svgId) {
+    if (!svgId) return null;
+    
+    // 1. Игнорируем всё, что точно не провинция
+    const ignoreList = ["water", "text", "rect", "line", "poly", "object", "ocean"];
+    if (ignoreList.some(term => svgId.toLowerCase().includes(term))) {
+        return null;
+    }
+
+    // 2. Вытаскиваем только цифры из ID
+    const match = svgId.match(/\d+/);
+    if (!match) return null;
+    
+    return parseInt(match[0]);
+}
+
+        function paintProvince(regId, teamId) {
+            const color = teamId === 1 ? '#2ecc71' : (teamId === 2 ? '#3498db' : '#7f8c8d');
+            
+            // Select all elements on the map that *contain* this ID (to catch "path_153", groups, etc.)
+            const candidates = document.querySelectorAll(`[id*="${regId}"]`);
+
+            candidates.forEach(el => {
+                const extractedId = getRealProvinceIdFromSvgId(el.id);
+                if (extractedId === regId) {
+                    el.style.fill = color;
+                }
+            });
+        }
+
+        window.setCountryTeam = function(countryName, teamId) {
+            const country = countriesData[countryName];
+            if (!country) return;
+
+            country.team = teamId;
+            country.regions.forEach(regId => {
+                regionOwners[regId] = teamId;
+                paintProvince(regId, teamId);
+            });
+
+            updateCountryPanelStatus(countryName, teamId);
+            updateAll(); // Recalculate stats
+        };
+
+        function updateCountryPanelStatus(countryName, teamId) {
+            const safeId = countryName.replace(/\s+/g, '-');
+            const panel = document.getElementById('panel-' + safeId);
+            if (!panel) return;
+
+            const btns = panel.querySelectorAll('.team-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+
+            if (teamId === 1) panel.querySelector('.t1').classList.add('active');
+            else if (teamId === 2) panel.querySelector('.t2').classList.add('active');
+            else panel.querySelector('.bot').classList.add('active');
+
+            panel.style.borderLeftColor = teamId === 1 ? '#2ecc71' : (teamId === 2 ? '#3498db' : '#7f8c8d');
+        }
+
+        function setupMapListeners() {
+            const svg = document.querySelector('svg');
+            if(!svg) return;
+            svg.setAttribute('width','100%'); 
+            svg.setAttribute('height','100%');
+            if(!svg.hasAttribute('viewBox')) {
+                try { const b = svg.getBBox(); if(b.width>0) svg.setAttribute('viewBox', `${b.x} ${b.y} ${b.width} ${b.height}`); } catch(e){}
+            }
+
+            const paths = svg.querySelectorAll('path, polygon');
+            const tooltip = document.getElementById('tooltip');
+
+            paths.forEach(el => {
+                const regId = getRealProvinceIdFromSvgId(el.id);
+                if (regId === null) return; // This is water or text, ignore.
+
+                paintProvince(regId, 0); // Initially paint neutral (Bot Gray)
+
+                el.addEventListener('click', () => {
+                    const reg = regionsData[regId];
+                    if (!reg) return;
+
+                    const countryName = reg.country;
+                    const country = countriesData[countryName];
+                    let currentTeam = regionOwners[regId] || 0;
+                    let newTeam = currentTeam === 0 ? 1 : (currentTeam === 1 ? 2 : 0);
+                    
+                    if (country && country.regions.length === 12) {
+                        setCountryTeam(countryName, newTeam); // Single province click sets team for all 12.
+                    } else {
+                        regionOwners[regId] = newTeam;
+                        paintProvince(regId, newTeam);
+                        updateAll(); 
+                    }
+                });
+
+                el.addEventListener('mousemove', (e) => {
+                    const reg = regionsData[regId];
+                    if(reg) {
+                        tooltip.style.display = 'block';
+                        tooltip.style.left = (e.pageX + 15) + 'px';
+                        tooltip.style.top = (e.pageY + 15) + 'px';
+                        tooltip.innerHTML = `
+                            <strong>${reg.name}</strong> (${reg.country})<br>
+                            Владелец: ${TEAM_NAMES[regionOwners[regId]]}<br>
+                            Ресурс: ${reg.resource} (x${reg.multiplier})
+                        `;
+                    }
+                });
+
+                el.addEventListener('mouseout', () => {
+                    tooltip.style.display = 'none';
+                });
+            });
+        }
+
+        function updateAll() {
+            // Recalculate Statistics
+            let stats = {
+                1: { count: 0, food: 0, mat: 0, nrg: 0 },
+                2: { count: 0, food: 0, mat: 0, nrg: 0 },
+                0: { count: 0, food: 0, mat: 0, nrg: 0 }
+            };
+
+            for (let regId in regionOwners) {
+                const team = regionOwners[regId];
+                const reg = regionsData[regId];
+                if (!reg) continue;
+
+                stats[team].count += 1;
+
+                let res = reg.resource;
+                let mult = reg.multiplier || 1;
+
+                if (res === 'grain' || res === 'fish') stats[team].food += mult;
+                else if (res === 'iron' || res === 'wood' || res === 'metal') stats[team].mat += mult;
+                else if (res === 'oil' || res === 'coal' || res === 'gas') stats[team].nrg += mult;
+            }
+
+            const container = document.getElementById('stats-container');
+            container.innerHTML = '';
+
+            [1, 2, 0].forEach(team => {
+                let s = stats[team];
+                let teamClass = team === 1 ? 't1' : (team === 2 ? 't2' : 'bot');
+                let color = team === 1 ? '#2ecc71' : (team === 2 ? '#3498db' : '#7f8c8d');
+                
+                container.innerHTML += `
+                    <div class="team-stats ${teamClass}" style="border-left-color: ${color}">
+                        <div class="team-title">
+                            <span>${TEAM_NAMES[team]}</span>
+                            <span>Провинций: ${s.count}</span>
+                        </div>
+                        <table>
+                            <tr><th>Еда</th><th>Материалы</th><th>Энергия</th></tr>
+                            <tr><td>${s.food}</td><td>${s.mat}</td><td>${s.nrg}</td></tr>
+                        </table>
+                    </div>
+                `;
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
